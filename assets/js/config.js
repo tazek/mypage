@@ -1,19 +1,3 @@
-document.body.classList.add("is-loading");
-
-const preloader = document.querySelector(".c-preloader");
-const preText = document.querySelector(".c-preloader__text");
-
-gsap.set(preText, { y: 40, opacity: 0 });
-
-const preloadTl = gsap.timeline();
-
-preloadTl.to(preText, {
-    y: 0,
-    opacity: 1,
-    duration: 0.6,
-    ease: "power3.out"
-});
-
 function handleNavScroll() {
     const nav = document.querySelector(".c-nav");
     if (!nav) return;
@@ -147,26 +131,6 @@ window.addEventListener("load", function () {
 
     });
     
-    const panels = document.querySelectorAll(".l-section");
-
-    panels.forEach(panel => {
-
-    const inner = panel.querySelector(".c-section__inner");
-
-    if (!inner) return;
-
-    gsap.to(inner, {
-        filter: window.innerWidth < 768 ? "blur(3px)" : "blur(6px)",
-        ease: "none",
-        scrollTrigger: {
-            trigger: panel,
-            start: "top top",
-            end: "bottom top",
-            scrub: true
-            }
-        });
-    });
-    
     document.fonts.ready.then(() => {
         ScrollTrigger.refresh();
         setTimeout(handleNavScroll, 50);
@@ -179,50 +143,6 @@ window.addEventListener("load", function () {
         resizeTimeout = setTimeout(() => {
             ScrollTrigger.refresh();
         }, 250);
-    });
-    
-    Promise.all([
-        document.fonts.ready,
-        new Promise(resolve => {
-            const imgs = document.images;
-            let loaded = 0;
-
-            if (imgs.length === 0) resolve();
-
-            for (let img of imgs) {
-                if (img.complete) {
-                    loaded++;
-                    if (loaded === imgs.length) resolve();
-                } else {
-                    img.addEventListener("load", () => {
-                        loaded++;
-                        if (loaded === imgs.length) resolve();
-                    });
-                }
-            }
-        })
-    ]).then(() => {
-
-        ScrollTrigger.refresh();
-
-        gsap.to(preText, {
-            y: -40,
-            opacity: 0,
-            duration: 0.4,
-            ease: "power3.in"
-        });
-
-        gsap.to(preloader, {
-            opacity: 0,
-            duration: 0.5,
-            delay: 0.2,
-            onComplete: () => {
-                preloader.remove();
-                document.body.classList.remove("is-loading");
-                ScrollTrigger.refresh();
-            }
-        });
-
     });
 
 });
