@@ -1,0 +1,247 @@
+:root {
+    --color-bg: #e9e9e9;
+    --color-bg-surface-1: #f8f8f8;
+    --fs-400: 1.4rem;
+    --fs-700: 2rem;
+    --fs-900: 2.6rem;
+    --color-heading: #222222;
+    --color-text: #3e3e3e;
+    --nav-underline-height: 1px;
+    --nav-underline-width: 100px;
+    --section-space: 4rem;
+}
+
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    background-color: var(--color-bg);
+    font-family: 'Inter', sans-serif;
+    font-feature-settings: 'kern' 1;
+    font-kerning: normal;
+    text-rendering: optimizeLegibility;
+}
+
+body.is-nav-open {
+    overflow: hidden;
+}
+
+.c-nav {
+    background: transparent;
+    height: 80px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9998;
+    inset: 0 0 auto 0;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.c-nav.is-scrolled {
+    background: #f3f3f3;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.c-nav__brand {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+}
+
+.c-nav__logo {
+    height: 40px;
+    width: auto;
+}
+
+.c-nav__toggle {
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+    z-index: 10000;
+    cursor: pointer;
+}
+
+.c-nav__toggle-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #2f302e;
+    margin: 7px 0;
+    transform-origin: center;
+    transition: background 0.3s ease;
+}
+
+.c-nav:not(.c-nav--open) .c-nav__toggle:hover .c-nav__toggle-line {
+    background: #e94310;
+}
+
+.c-nav.c-nav--open .c-nav__toggle:hover .c-nav__toggle-line {
+    background: #e94310;
+}
+
+.c-nav__overlay {
+    background: #fafafa;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    pointer-events: none;
+    clip-path: circle(0% at 100% 0);
+}
+
+.c-nav__list {
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.c-nav__link {
+    font-family: 'Inter', sans-serif;
+    font-size: var(--fs-700);
+    font-weight: 600;
+    color: #2f302e;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: block;
+    position: relative;
+    transform: translateY(120%);
+}
+
+.c-nav__link::after {
+    background: currentColor;
+    transition: color 0.2s ease;
+    height: var(--nav-underline-height);
+    width: var(--nav-underline-width);
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%) scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+    content: "";
+}
+
+.c-nav__link:hover::after {
+    transition: transform 0.2s ease;
+    transform: translateX(-50%) scaleX(1);
+}
+
+.c-nav__link:hover {
+    color: #000000;
+    text-decoration: none;
+}
+
+h1, h2, h3 {
+    font-family: 'Sora', sans-serif;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+}
+
+h2 {
+    font-size: var(--fs-700);
+}
+
+.l-container {
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+    width: 100%;
+    max-width: 1140px;
+}
+
+.u-py-section {
+    padding-block: var(--section-space);
+}
+
+.l-section {
+    color: var(--color-text);
+    position: relative;
+}
+
+.l-section--hero {
+    min-height: 100dvh;
+    align-items: center;
+    display: flex;
+}
+
+.l-section--hero .l-container {
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.c-hero__title {
+    font-size: var(--fs-900);
+    text-transform: uppercase;
+}
+
+.c-reveal__title, .c-reveal__text, .c-reveal__link {
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.l-section--services {
+    background: var(--color-bg-surface-1);
+}
+
+.l-section--about {
+    background: var(--color-bg-surface-1);
+}
+
+@media (min-width: 576px) {
+
+    :root {
+        --fs-700: 2.4rem;
+        --section-space: 5rem;
+    }
+    
+    .c-nav__logo {
+        height: 44px;
+    }
+    
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 992px) {
+    
+    :root {
+        --fs-700: 3rem;
+        --fs-900: 4.4rem;
+        --nav-underline-height: 2px;
+        --nav-underline-width: 150px;
+        --section-space: 6rem;
+    }
+
+    .c-nav__logo {
+        height: 50px;
+    }
+    
+    .l-container {
+        max-width: min(100% - 3rem, 1140px);
+    }
+    
+}
+
+@media (min-width: 1200px) {
+ 
+}
