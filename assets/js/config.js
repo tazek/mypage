@@ -15,147 +15,271 @@ function handleNavScroll() {
 
 window.addEventListener("load", function () {
 
-    const nav = document.querySelector(".c-nav");
-    const toggle = nav.querySelector(".c-nav__toggle");
-    const overlay = nav.querySelector(".c-nav__overlay");
-    const links = nav.querySelectorAll(".c-nav__link");
-    const bars = nav.querySelectorAll(".c-nav__toggle-line");
-
-    gsap.set(links, {
-        y: 100,
-        opacity: 0
-    });
-
-    let tl = gsap.timeline({
-        paused: true
-    });
-
-    tl.to(overlay, {
-        clipPath: "circle(150% at calc(100% - 40px) 40px)",
-        duration: 0.8,
-        ease: "power4.inOut",
-        onStart: () => overlay.style.pointerEvents = "auto",
-        onReverseComplete: () => overlay.style.pointerEvents = "none"
-    });
-
-    tl.to(links, {
-        y: 0,
-        opacity: 1,
-        stagger: 0.08,
-        duration: 0.6,
-        ease: "power3.out"
-    }, "-=0.4");
-
-    tl.to(bars[0], {
-        rotate: 45,
-        y: 9,
-        duration: 0.3
-    }, 0);
-
-    tl.to(bars[1], {
-        opacity: 0,
-        duration: 0.3
-    }, 0);
-
-    tl.to(bars[2], {
-        rotate: -45,
-        y: -9,
-        duration: 0.3
-    }, 0);
-
-    let open = false;
-
-    toggle.addEventListener("click", function () {
-
-        if (isDesktop()) return;
-
-        open = !open;
-        nav.classList.toggle("c-nav--open");
-        document.body.classList.toggle("is-nav-open");
-        open ? tl.play() : tl.reverse();
-    });
-
-    links.forEach(link => {
-        link.addEventListener("click", function (e) {
-            
-            if (isDesktop()) return;
-
-            const targetId = this.getAttribute("href");
-
-            if (!targetId.startsWith("#")) return;
-
-            e.preventDefault();
-
-            const section = document.querySelector(targetId);
-            if (!section) return;
-
-            open = false;
-            nav.classList.remove("c-nav--open");
-            document.body.classList.remove("is-nav-open");
-
-            tl.reverse().eventCallback("onReverseComplete", () => {
-
-                const navHeight = nav.offsetHeight;
-                const targetPosition = section.offsetTop - navHeight;
-
-                gsap.to(window, {
-                    duration: 0.8,
-                    scrollTo: targetPosition,
-                    ease: "power2.out"
-                });
-
-                tl.eventCallback("onReverseComplete", null);
-
-            });
-
-        });
-    
-    });
-    
-    window.addEventListener("resize", () => {
-
-        if (isDesktop()) {
-            open = false;
-            nav.classList.remove("c-nav--open");
-            document.body.classList.remove("is-nav-open");
-            tl.progress(0).pause();
-        }
-
-    });
-    
-    window.addEventListener("scroll", handleNavScroll);
-    
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-    const sections = document.querySelectorAll(".c-reveal");
+    const nav = document.querySelector(".c-nav");
+    const toggle = nav?.querySelector(".c-nav__toggle");
+    const overlay = nav?.querySelector(".c-nav__overlay");
+    const links = nav?.querySelectorAll(".c-nav__link") || [];
+    const bars = nav?.querySelectorAll(".c-nav__toggle-line") || [];
 
-    sections.forEach(section => {
-        
+    // =========================
+    // NAV
+    // =========================
+    if (nav && toggle && overlay && bars.length === 3) {
+        gsap.set(links, {
+            y: 100,
+            opacity: 0
+        });
+
+        let tl = gsap.timeline({
+            paused: true
+        });
+
+        tl.to(overlay, {
+            clipPath: "circle(150% at calc(100% - 40px) 40px)",
+            duration: 0.8,
+            ease: "power4.inOut",
+            onStart: () => overlay.style.pointerEvents = "auto",
+            onReverseComplete: () => overlay.style.pointerEvents = "none"
+        });
+
+        tl.to(links, {
+            y: 0,
+            opacity: 1,
+            stagger: 0.08,
+            duration: 0.6,
+            ease: "power3.out"
+        }, "-=0.4");
+
+        tl.to(bars[0], {
+            rotate: 45,
+            y: 9,
+            duration: 0.3
+        }, 0);
+
+        tl.to(bars[1], {
+            opacity: 0,
+            duration: 0.3
+        }, 0);
+
+        tl.to(bars[2], {
+            rotate: -45,
+            y: -9,
+            duration: 0.3
+        }, 0);
+
+        let open = false;
+
+        toggle.addEventListener("click", function () {
+            if (isDesktop()) return;
+
+            open = !open;
+            nav.classList.toggle("c-nav--open");
+            document.body.classList.toggle("is-nav-open");
+            open ? tl.play() : tl.reverse();
+        });
+
+        links.forEach(link => {
+            link.addEventListener("click", function (e) {
+                if (isDesktop()) return;
+
+                const targetId = this.getAttribute("href");
+                if (!targetId || !targetId.startsWith("#")) return;
+
+                e.preventDefault();
+
+                const section = document.querySelector(targetId);
+                if (!section) return;
+
+                open = false;
+                nav.classList.remove("c-nav--open");
+                document.body.classList.remove("is-nav-open");
+
+                tl.reverse().eventCallback("onReverseComplete", () => {
+                    const navHeight = nav.offsetHeight;
+                    const targetPosition = section.offsetTop - navHeight;
+
+                    gsap.to(window, {
+                        duration: 0.8,
+                        scrollTo: targetPosition,
+                        ease: "power2.out"
+                    });
+
+                    tl.eventCallback("onReverseComplete", null);
+                });
+            });
+        });
+
+        window.addEventListener("resize", () => {
+            if (isDesktop()) {
+                open = false;
+                nav.classList.remove("c-nav--open");
+                document.body.classList.remove("is-nav-open");
+                tl.progress(0).pause();
+            }
+        });
+    }
+
+    window.addEventListener("scroll", handleNavScroll);
+
+    // =========================
+    // UNIWERSALNA FUNKCJA PARALLAX
+    // =========================
+    function initParallaxSection({
+        section,
+        media,
+        content,
+        bg = null,
+        start = "top bottom",
+        end = "bottom top",
+        mediaYPercent = 12,
+        contentY = -60,
+        bgScaleTo = 1.14,
+        scrub = true
+    }) {
+        const sectionEl = document.querySelector(section);
+        const mediaEl = document.querySelector(media);
+        const contentEl = document.querySelector(content);
+        const bgEl = bg ? document.querySelector(bg) : null;
+
+        if (!sectionEl || !mediaEl || !contentEl) return;
+
+        // Startowy stan contentu (ważne przy refresh / restore scroll)
+        gsap.set(contentEl, { y: 0, opacity: 1 });
+
+        // Parallax tła / media wrapper
+        gsap.to(mediaEl, {
+            yPercent: mediaYPercent,
+            ease: "none",
+            scrollTrigger: {
+                trigger: sectionEl,
+                start,
+                end,
+                scrub,
+                invalidateOnRefresh: true
+            }
+        });
+
+        // Dodatkowy zoom obrazka / video
+        if (bgEl) {
+            gsap.to(bgEl, {
+                scale: bgScaleTo,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: sectionEl,
+                    start,
+                    end,
+                    scrub,
+                    invalidateOnRefresh: true
+                }
+            });
+        }
+
+        // Parallax contentu (tylko ruch, bez opacity)
+        gsap.to(contentEl, {
+            y: contentY,
+            ease: "none",
+            scrollTrigger: {
+                trigger: sectionEl,
+                start,
+                end,
+                scrub,
+                invalidateOnRefresh: true
+            }
+        });
+    }
+
+    // =========================
+    // HERO PARALLAX
+    // =========================
+    initParallaxSection({
+        section: ".l-section--hero",
+        media: ".c-hero__media",
+        content: ".c-hero__parallax",
+        bg: ".c-hero__video",
+        start: "top top",
+        end: "bottom top",
+        mediaYPercent: 12,
+        contentY: -80,
+        bgScaleTo: 1.14
+    });
+
+    // =========================
+    // CTA PARALLAX
+    // =========================
+    initParallaxSection({
+        section: ".l-section--cta",
+        media: ".c-cta__media",
+        content: ".c-cta__parallax",
+        bg: ".c-cta__image, .c-cta__video",
+        start: "top bottom",
+        end: "bottom top",
+        mediaYPercent: 12,
+        contentY: -60,
+        bgScaleTo: 1.14
+    });
+
+    // =========================
+    // REVEAL SEKCJI (sekwencyjny)
+    // =========================
+    const revealSections = document.querySelectorAll(".c-reveal");
+
+    function showRevealSection(section) {
         const elements = section.querySelectorAll(".c-reveal__title, .c-reveal__text, .c-reveal__link");
 
         gsap.to(elements, {
-            scrollTrigger: {
-            trigger: section,
-            start: "top 65%",
-            toggleActions: "play none none reverse"
-        },
             y: 0,
             opacity: 1,
-            stagger: {
-                each: 0.12,
-                from: "start"
-            },
-            duration: 0.5,
-            ease: "power3.out"
+            stagger: 0.08,
+            duration: 0.45,
+            ease: "power3.out",
+            overwrite: "auto"
+        });
+    }
+
+    function hideRevealSection(section) {
+        const elements = section.querySelectorAll(".c-reveal__title, .c-reveal__text, .c-reveal__link");
+
+        gsap.to(elements, {
+            y: 40,
+            opacity: 0,
+            stagger: 0.05,
+            duration: 0.3,
+            ease: "power2.in",
+            overwrite: "auto"
+        });
+    }
+
+    revealSections.forEach(section => {
+        const elements = section.querySelectorAll(".c-reveal__title, .c-reveal__text, .c-reveal__link");
+
+        // Stan początkowy
+        gsap.set(elements, {
+            y: 40,
+            opacity: 0
         });
 
+        ScrollTrigger.create({
+            trigger: section,
+            start: "top 70%",
+            end: "bottom 35%",
+            onEnter: () => showRevealSection(section),
+            onLeave: () => hideRevealSection(section),
+            onEnterBack: () => showRevealSection(section),
+            onLeaveBack: () => hideRevealSection(section)
+        });
     });
-    
+
+    // =========================
+    // REFRESH / FIXY
+    // =========================
     document.fonts.ready.then(() => {
         ScrollTrigger.refresh();
+        ScrollTrigger.update();
         setTimeout(handleNavScroll, 50);
     });
-    
+
     let resizeTimeout;
 
     window.addEventListener("resize", () => {
@@ -163,6 +287,11 @@ window.addEventListener("load", function () {
         resizeTimeout = setTimeout(() => {
             ScrollTrigger.refresh();
         }, 250);
+    });
+
+    requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+        ScrollTrigger.update();
     });
 
 });
