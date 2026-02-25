@@ -1,7 +1,3 @@
-function isDesktop() {
-    return window.innerWidth >= 992;
-}
-
 function handleNavScroll() {
     const nav = document.querySelector(".c-nav");
     if (!nav) return;
@@ -66,9 +62,6 @@ window.addEventListener("load", function () {
     let open = false;
 
     toggle.addEventListener("click", function () {
-
-        if (isDesktop()) return;
-
         open = !open;
         nav.classList.toggle("c-nav--open");
         document.body.classList.toggle("is-nav-open");
@@ -77,8 +70,6 @@ window.addEventListener("load", function () {
 
     links.forEach(link => {
         link.addEventListener("click", function (e) {
-            
-            if (isDesktop()) return;
 
             const targetId = this.getAttribute("href");
 
@@ -110,17 +101,6 @@ window.addEventListener("load", function () {
 
         });
     
-    });
-    
-    window.addEventListener("resize", () => {
-
-        if (isDesktop()) {
-            open = false;
-            nav.classList.remove("c-nav--open");
-            document.body.classList.remove("is-nav-open");
-            tl.progress(0).pause();
-        }
-
     });
     
     window.addEventListener("scroll", handleNavScroll);

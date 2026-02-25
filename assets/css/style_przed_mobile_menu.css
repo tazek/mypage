@@ -7,7 +7,7 @@
     --color-heading: #222222;
     --color-text: #3e3e3e;
     --nav-height: 80px;
-    --nav-underline-height: 2px;
+    --nav-underline-height: 1px;
     --nav-underline-width: 100px;
     --section-space: 4rem;
 }
@@ -255,55 +255,12 @@ h2 {
         --fs-700: 3rem;
         --fs-900: 4.4rem;
         --nav-underline-height: 2px;
-        --nav-underline-width: 50px;
+        --nav-underline-width: 150px;
         --section-space: 6rem;
     }
 
     .c-nav__logo {
         height: 50px;
-    }
-    
-    .c-nav__toggle {
-        display: none;
-    }
-
-    .c-nav__overlay {
-        background: transparent;
-        height: auto;
-        width: auto;
-        align-items: center;
-        justify-content: flex-end;
-        display: flex;
-        position: static;
-        clip-path: none !important;
-        pointer-events: auto !important;
-    }
-
-    .c-nav__list {
-        flex-direction: row;
-        align-items: center;
-        gap: 2rem;
-    }
-
-    .c-nav__link {
-        transform: none !important;
-        opacity: 1 !important;
-        font-size: 1rem;
-    }
-    
-    .c-nav__link::after {
-        bottom: -6px;
-    }
-
-    .c-nav__brand {
-        left: 30px;
-    }
-
-    .c-nav__overlay {
-        position: absolute;
-        right: 30px;
-        top: 50%;
-        transform: translateY(-50%);
     }
     
     .l-container {
