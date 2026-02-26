@@ -22,12 +22,18 @@ window.addEventListener("load", function () {
     const overlay = nav?.querySelector(".c-nav__overlay");
     const links = nav?.querySelectorAll(".c-nav__link") || [];
     const bars = nav?.querySelectorAll(".c-nav__toggle-line") || [];
+    const overlayBrand = nav.querySelector(".c-nav__overlay-brand img");
 
     // =========================
     // NAV
     // =========================
     if (nav && toggle && overlay && bars.length === 3) {
         gsap.set(links, {
+            y: 100,
+            opacity: 0
+        });
+
+        gsap.set(overlayBrand, {
             y: 100,
             opacity: 0
         });
@@ -43,6 +49,13 @@ window.addEventListener("load", function () {
             onStart: () => overlay.style.pointerEvents = "auto",
             onReverseComplete: () => overlay.style.pointerEvents = "none"
         });
+
+        tl.to(overlayBrand, {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            ease: "power3.out"
+        }, "-=0.6");
 
         tl.to(links, {
             y: 0,

@@ -50,9 +50,11 @@ body {
 
 h1, h2, h3 {
     margin: 0;
-    font-family: 'Sora', sans-serif;
-    line-height: 1.1;
-    letter-spacing: -0.01em;
+    font-family: 'Red Hat Display', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1;
     color: var(--color-heading);
 }
 
@@ -117,9 +119,9 @@ body.is-nav-open {
    6. COMPONENTS: NAV
 ================================================== */
 .c-nav {
+    background: transparent;
     width: 100%;
     height: var(--nav-height);
-    background: transparent;
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 9998;
@@ -184,36 +186,48 @@ body.is-nav-open {
 }
 
 .c-nav__overlay {
+    background: #fafafa;
+    align-items: center;
+    justify-content: center;
     position: fixed;
     inset: 0;
     z-index: 9999;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fafafa;
+    flex-direction: column;
     pointer-events: none;
     clip-path: circle(0% at 100% 0);
 }
 
+.c-nav__overlay-brand {
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.c-nav__overlay-brand img {
+    height: 48px;
+}
+
 .c-nav__list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
     margin: 0;
     padding: 0;
     list-style: none;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .c-nav__link {
     display: block;
     position: relative;
+    font-family: 'Red Hat Display', sans-serif;
+    font-optical-sizing: auto;
     font-size: var(--fs-700);
     font-weight: 600;
     color: var(--color-text-nav);
     text-decoration: none;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     transform: translateY(120%);
 }
 
@@ -419,10 +433,15 @@ body.is-nav-open {
         transform: translateY(-50%);
         width: auto;
         height: auto;
+        flex-direction: row;
         justify-content: flex-end;
         background: transparent;
         clip-path: none !important;
         pointer-events: auto !important;
+    }
+    
+    .c-nav__overlay-brand {
+        display: none;
     }
 
     .c-nav__list {

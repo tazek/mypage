@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Warstwa_2" data-name="Warstwa 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 122.8 151.5">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #4db9e9;
+      }
+
+      .cls-2 {
+        fill: url(#Gradient_bez_nazwy);
+      }
+
+      .cls-3 {
+        fill: #0169ad;
+      }
+
+      .cls-4 {
+        fill: #d35;
+      }
+
+      .cls-5 {
+        fill: url(#Gradient_bez_nazwy_3);
+      }
+
+      .cls-6 {
+        fill: #893181;
+      }
+
+      .cls-7 {
+        fill: #bc2b86;
+      }
+
+      .cls-8 {
+        fill: #ea8440;
+      }
+
+      .cls-9 {
+        fill: #75b850;
+      }
+
+      .cls-10 {
+        fill: #00964d;
+      }
+
+      .cls-11 {
+        fill: url(#Gradient_bez_nazwy_2);
+      }
+
+      .cls-12 {
+        fill: #6e3282;
+      }
+
+      .cls-13 {
+        fill: #f7ce35;
+      }
+    </style>
+    <linearGradient id="Gradient_bez_nazwy" data-name="Gradient bez nazwy" x1="81.71" y1="-31.41" x2="99.67" y2="-12.81" gradientTransform="translate(0 59.91) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ca6907"/>
+      <stop offset=".52" stop-color="#ca6907"/>
+      <stop offset=".92" stop-color="#691e00"/>
+    </linearGradient>
+    <linearGradient id="Gradient_bez_nazwy_2" data-name="Gradient bez nazwy 2" x1="43.72" y1="-91.75" x2="64.54" y2="-73.67" gradientTransform="translate(0 59.91) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#008ec9"/>
+      <stop offset=".52" stop-color="#008ec9"/>
+      <stop offset=".8" stop-color="#00273a"/>
+    </linearGradient>
+    <linearGradient id="Gradient_bez_nazwy_3" data-name="Gradient bez nazwy 3" x1="73.44" y1="-4.8" x2="59.7" y2="-17.69" gradientTransform="translate(0 59.91) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#de0930"/>
+      <stop offset=".52" stop-color="#de0930"/>
+      <stop offset=".92" stop-color="#5a0806"/>
+    </linearGradient>
+  </defs>
+  <g id="Warstwa_2-2" data-name="Warstwa 2">
+    <g id="Warstwa_1-2" data-name="Warstwa 1-2">
+      <g>
+        <polygon class="cls-10" points="70.2 30.4 87.7 0 105.3 30.4 70.2 30.4"/>
+        <polygon class="cls-13" points="87.7 60.8 105.3 30.4 122.8 60.8 87.7 60.8"/>
+        <polygon class="cls-2" points="70.2 91.2 87.7 60.8 105.3 91.2 70.2 91.2"/>
+        <polygon class="cls-4" points="35.1 91.2 52.6 60.8 70.2 91.2 35.1 91.2"/>
+        <polygon class="cls-6" points="52.6 121.1 70.2 90.7 87.7 121.1 52.6 121.1"/>
+        <polygon class="cls-1" points="0 151.5 17.5 121.1 35.1 151.5 0 151.5"/>
+        <polygon class="cls-11" points="35.1 151.5 52.6 121.1 70.2 151.5 35.1 151.5"/>
+        <polygon class="cls-9" points="105.3 30.4 87.7 60.8 70.2 30.4 105.3 30.4"/>
+        <polygon class="cls-8" points="122.8 60.8 105.3 91.2 87.7 60.8 122.8 60.8"/>
+        <polygon class="cls-5" points="87.7 60.8 70.2 91.2 52.6 60.8 87.7 60.8"/>
+        <polygon class="cls-7" points="70.2 90.7 52.6 121.1 35.1 90.7 70.2 90.7"/>
+        <polygon class="cls-12" points="87.7 121.1 70.2 151.5 52.6 121.1 87.7 121.1"/>
+        <polygon class="cls-3" points="52.6 121.1 35.1 151.5 17.5 121.1 52.6 121.1"/>
+      </g>
+    </g>
+  </g>
+</svg>
