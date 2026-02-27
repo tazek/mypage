@@ -308,3 +308,62 @@ window.addEventListener("load", function () {
     });
 
 });
+
+(function () {
+  const progressBar = document.querySelector('.c-scroll-progress__bar');
+  if (!progressBar) return;
+
+  let maxScroll = 0;
+  let ticking = false;
+
+  function recalcMaxScroll() {
+    // Cała wysokość dokumentu - wysokość okna
+    maxScroll = Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight
+    ) - window.innerHeight;
+
+    // Zabezpieczenie dla bardzo krótkich stron
+    if (maxScroll < 1) maxScroll = 1;
+  }
+
+  function updateProgress() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+    const progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
+
+    progressBar.style.transform = `scaleX(${progress})`;
+    ticking = false;
+  }
+
+  function requestUpdate() {
+    if (!ticking) {
+      window.requestAnimationFrame(updateProgress);
+      ticking = true;
+    }
+  }
+
+  function onResize() {
+    recalcMaxScroll();
+    requestUpdate();
+  }
+
+  // Init
+  recalcMaxScroll();
+  updateProgress();
+
+  // Events
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', onResize);
+
+  // Dodatkowo po pełnym załadowaniu (obrazy/video mogą zmienić wysokość strony)
+  window.addEventListener('load', onResize);
+
+  // Opcjonalnie: jeśli treść dynamicznie się zmienia (np. accordion, lazyload)
+  if ('ResizeObserver' in window) {
+    const ro = new ResizeObserver(() => {
+      recalcMaxScroll();
+      requestUpdate();
+    });
+    ro.observe(document.body);
+  }
+})();

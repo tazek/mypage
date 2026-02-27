@@ -27,6 +27,10 @@
 
     --container-max: 1140px;
     --container-pad: 1.5rem;
+    
+    --scroll-progress-height: 2px;
+    --scroll-progress-color: #e94310;
+    --scroll-progress-z: 9999;
 }
 
 /* ==================================================
@@ -176,13 +180,19 @@ body.is-nav-open {
     transition: background 0.3s ease;
 }
 
-.c-nav.c-nav--open .c-nav__toggle-line, .c-nav.is-scrolled .c-nav__toggle-line {
+.c-nav.is-scrolled .c-nav__toggle-line {
     background: var(--color-text-nav);
 }
 
-.c-nav:not(.c-nav--open) .c-nav__toggle:hover .c-nav__toggle-line,
-.c-nav.c-nav--open .c-nav__toggle:hover .c-nav__toggle-line {
+.c-nav.c-nav--open .c-nav__toggle-line {
     background: var(--color-accent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .c-nav:not(.c-nav--open) .c-nav__toggle:hover .c-nav__toggle-line,
+    .c-nav.c-nav--open .c-nav__toggle:hover .c-nav__toggle-line {
+        background: var(--color-accent);
+    }
 }
 
 .c-nav__overlay {
@@ -229,6 +239,10 @@ body.is-nav-open {
     text-transform: uppercase;
     letter-spacing: 0.06em;
     transform: translateY(120%);
+}
+
+.c-nav__list .c-nav__link:last-child {
+    --color-accent: #e94310;
 }
 
 .c-nav__link::after {
@@ -389,6 +403,33 @@ body.is-nav-open {
 
 .c-cta__button:hover {
     text-decoration: none;
+}
+
+/* Pasek - kontener */
+.c-scroll-progress {
+    background: rgba(0, 0, 0, 0.05);
+    height: var(--scroll-progress-height);
+    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: var(--scroll-progress-z);
+    pointer-events: none;
+}
+
+/* Właściwy pasek */
+.c-scroll-progress__bar {
+    background: var(--scroll-progress-color);
+    height: 100%;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left center;
+    will-change: transform;
+}
+
+/* Opcjonalnie: subtelnie cień */
+.c-scroll-progress__bar {
+    box-shadow: 0 0 8px rgba(233, 67, 16, 0.35);
 }
 
 /* ==================================================
