@@ -148,7 +148,7 @@ body.is-nav-open {
 .c-nav__brand {
     position: absolute;
     top: 50%;
-    left: 30px;
+    left: 20px;
     transform: translateY(-50%);
 }
 
@@ -164,7 +164,7 @@ body.is-nav-open {
     border: none;
     position: absolute;
     top: 50%;
-    right: 30px;
+    right: 20px;
     transform: translateY(-50%);
     z-index: 10000;
     cursor: pointer;
