@@ -67,7 +67,7 @@ window.addEventListener("load", function () {
 
         tl.to(bars[0], {
             rotate: 45,
-            y: 9,
+            y: 7,
             duration: 0.3
         }, 0);
 
@@ -78,7 +78,7 @@ window.addEventListener("load", function () {
 
         tl.to(bars[2], {
             rotate: -45,
-            y: -9,
+            y: -7,
             duration: 0.3
         }, 0);
 
