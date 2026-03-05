@@ -318,71 +318,200 @@ window.addEventListener("load", function () {
             return;
         }
 
+        // Czy to jest kolejne wejście w tej samej sesji (tab)?
+        const SESSION_KEY = "designio_has_loaded_once";
+        const hasLoadedOnce = sessionStorage.getItem(SESSION_KEY) === "1";
+
+        // Ustawienia
+        const FAST_MIN_VISIBLE_MS = 260; // żeby nie "mignęło"
+        const SLOW_FAILSAFE_MS = 12000;  // awaryjne zdjęcie blokady na pierwszym wejściu
+        const MAX_BEFORE_LOAD = hasLoadedOnce ? 100 : 99; // na kolejnych wejściach możemy od razu dobić
+
         let progress = 0;
         let target = 0;
         let rafId = null;
         let finished = false;
+        const startTs = performance.now();
+
+        function render() {
+            const shown = Math.round(progress);
+            percentEl.textContent = String(shown);
+            barEl.style.width = `${progress}%`;
+        }
 
         function computeTarget() {
-            const cap = finished ? 100 : 99;
-    
-            if (!finished) {
-                if (progress < 60) target = Math.min(cap, progress + (Math.random() * 10 + 6));
-                else if (progress < 85) target = Math.min(cap, progress + (Math.random() * 5 + 2));
-                else target = Math.min(cap, progress + (Math.random() * 2.5 + 0.6));
-            } else {
+            const cap = finished ? 100 : MAX_BEFORE_LOAD;
+
+            // Na kolejnych wejściach: szybciej i bez "czekania"
+            if (hasLoadedOnce) {
                 target = 100;
+                return;
+            }
+
+            // Pierwsze wejście: realistyczny progres, ale dochodzimy do 99
+            if (progress < 60) {
+                target = Math.min(cap, progress + (Math.random() * 10 + 6)); // +6..16
+            } else if (progress < 88) {
+                target = Math.min(cap, progress + (Math.random() * 5 + 2));  // +2..7
+            } else {
+                target = Math.min(cap, progress + (Math.random() * 2.5 + 0.6)); // +0.6..3.1
             }
         }
 
-        function render() {
-            percentEl.textContent = String(Math.round(progress));
-            barEl.style.width = `${progress}%`;
+        function hideWhenAllowed() {
+            // Na kolejnych wejściach: nie chowaj szybciej niż FAST_MIN_VISIBLE_MS
+            const elapsed = performance.now() - startTs;
+            const wait = Math.max(0, FAST_MIN_VISIBLE_MS - elapsed);
+
+            setTimeout(() => {
+                preloader.classList.add("is-hidden");
+                html.classList.remove("is-loading");
+
+                // odśwież ScrollTrigger po odsłonięciu (u Ciebie pomaga)
+                if (window.ScrollTrigger) {
+                    ScrollTrigger.refresh();
+                }
+
+                setTimeout(() => preloader.remove(), 650);
+            }, wait);
         }
 
         function tick() {
             computeTarget();
-            
-            progress += (target - progress) * 0.08;
 
-            if (!finished) progress = Math.min(progress, 99);
-            else progress = Math.min(progress, 100);
+            // easing (na fast wejściach szybciej)
+            const ease = hasLoadedOnce ? 0.18 : 0.08;
+            progress += (target - progress) * ease;
+
+            // clamp
+            if (!finished) {
+                progress = Math.min(progress, MAX_BEFORE_LOAD);
+            } else {
+                progress = Math.min(progress, 100);
+            }
 
             render();
 
+            // warunek zakończenia
             if (finished && progress >= 99.6) {
                 progress = 100;
                 render();
+
                 cancelAnimationFrame(rafId);
                 rafId = null;
-                hide();
-                
+
+                hideWhenAllowed();
                 return;
             }
 
             rafId = requestAnimationFrame(tick);
         }
 
-        function hide() {
-            preloader.classList.add("is-hidden");
-            html.classList.remove("is-loading");
-
-            if (window.ScrollTrigger) {
-                ScrollTrigger.refresh();
-            }
-
-            setTimeout(() => preloader.remove(), 650);
-        }
-
+        // START
         rafId = requestAnimationFrame(tick);
 
-        window.addEventListener("load", () => {
+        if (hasLoadedOnce) {
+            // Kolejne wejścia: chowamy szybko (nie czekamy na load)
             finished = true;
+
+            // ale dla porządku ustaw flagę i tak
+            sessionStorage.setItem(SESSION_KEY, "1");
+        } else {
+            // Pierwsze wejście: chowamy dopiero po window.load
+            window.addEventListener("load", () => {
+                finished = true;
+                sessionStorage.setItem(SESSION_KEY, "1");
+            });
+
+            // fail-safe
+            setTimeout(() => {
+                finished = true;
+                sessionStorage.setItem(SESSION_KEY, "1");
+            }, SLOW_FAILSAFE_MS);
+        }
+    
+    })();
+
+    (function () {
+
+        // Prefetchujemy tylko linki wewnętrzne (ta sama domena)
+        const prefetched = new Set();
+
+        function isInternalUrl(url) {
+            try {
+                const u = new URL(url, location.href);
+                return u.origin === location.origin;
+            } catch {
+                return false;
+            }
+        }
+
+        function shouldPrefetch(url) {
+            if (!url) return false;
+            if (!isInternalUrl(url)) return false;
+            if (prefetched.has(url)) return false;
+
+            // nie prefetchuj anchorów i pseudo-linków
+            const u = new URL(url, location.href);
+            if (u.hash && (u.pathname === location.pathname)) return false;
+
+            // nie prefetchuj plików
+            if (/\.(pdf|zip|rar|7z|png|jpg|jpeg|webp|gif|svg|mp4|mp3|woff2?|ttf|otf)$/i.test(u.pathname)) return false;
+
+            // nie prefetchuj wyjść typu mailto/tel
+            if (url.startsWith("mailto:") || url.startsWith("tel:")) return false;
+
+            return true;
+        }
+
+        function prefetchDoc(url) {
+            if (!shouldPrefetch(url)) return;
+
+            prefetched.add(url);
+
+            const link = document.createElement("link");
+            link.rel = "prefetch";
+            link.as = "document";
+            link.href = url;
+            document.head.appendChild(link);
+        }
+
+        // Prefetch po hover/touch (super skuteczne)
+        document.querySelectorAll("a[href]").forEach(a => {
+
+            const href = a.getAttribute("href");
+            if (!href) return;
+
+            // hover
+            a.addEventListener("mouseenter", () => prefetchDoc(href), { passive: true });
+
+            // mobile: dotknięcie
+            a.addEventListener("touchstart", () => prefetchDoc(href), { passive: true });
+
+            // focus (tabbing)
+            a.addEventListener("focus", () => prefetchDoc(href), { passive: true });
+
         });
 
-        setTimeout(() => {
-            finished = true;
-        }, 12000);
+        // Prefetch "po chwili" najbardziej prawdopodobnych podstron (menu)
+        function prefetchTopNavAfterIdle() {
+            const navLinks = document.querySelectorAll(".c-nav__link[href]");
+            navLinks.forEach(a => prefetchDoc(a.getAttribute("href")));
+        }
+
+        // po pełnym załadowaniu + idle (żeby nie psuć TTI)
+        window.addEventListener("load", () => {
+
+            const run = () => prefetchTopNavAfterIdle();
+
+            if ("requestIdleCallback" in window) {
+                requestIdleCallback(run, { timeout: 2000 });
+            } else {
+                setTimeout(run, 1200);
+            }
+
+        });
+
     })();
 
 });
