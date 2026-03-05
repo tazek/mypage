@@ -307,6 +307,84 @@ window.addEventListener("load", function () {
         ScrollTrigger.update();
     });
 
+    (function () {
+        const html = document.documentElement;
+        const preloader = document.querySelector(".c-preloader");
+        const percentEl = document.querySelector(".js-preloader-percent");
+        const barEl = document.querySelector(".js-preloader-bar");
+
+        if (!preloader || !percentEl || !barEl) {
+            html.classList.remove("is-loading");
+            return;
+        }
+
+        let progress = 0;
+        let target = 0;
+        let rafId = null;
+        let finished = false;
+
+        function computeTarget() {
+            const cap = finished ? 100 : 99;
+    
+            if (!finished) {
+                if (progress < 60) target = Math.min(cap, progress + (Math.random() * 10 + 6));
+                else if (progress < 85) target = Math.min(cap, progress + (Math.random() * 5 + 2));
+                else target = Math.min(cap, progress + (Math.random() * 2.5 + 0.6));
+            } else {
+                target = 100;
+            }
+        }
+
+        function render() {
+            percentEl.textContent = String(Math.round(progress));
+            barEl.style.width = `${progress}%`;
+        }
+
+        function tick() {
+            computeTarget();
+            
+            progress += (target - progress) * 0.08;
+
+            if (!finished) progress = Math.min(progress, 99);
+            else progress = Math.min(progress, 100);
+
+            render();
+
+            if (finished && progress >= 99.6) {
+                progress = 100;
+                render();
+                cancelAnimationFrame(rafId);
+                rafId = null;
+                hide();
+                
+                return;
+            }
+
+            rafId = requestAnimationFrame(tick);
+        }
+
+        function hide() {
+            preloader.classList.add("is-hidden");
+            html.classList.remove("is-loading");
+
+            if (window.ScrollTrigger) {
+                ScrollTrigger.refresh();
+            }
+
+            setTimeout(() => preloader.remove(), 650);
+        }
+
+        rafId = requestAnimationFrame(tick);
+
+        window.addEventListener("load", () => {
+            finished = true;
+        });
+
+        setTimeout(() => {
+            finished = true;
+        }, 12000);
+    })();
+
 });
 
 (function () {

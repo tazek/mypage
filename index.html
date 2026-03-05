@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" class="is-loading">
 <head>
     <meta charset="utf-8" />
     <title>Tytuł strony</title>
@@ -21,6 +21,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- <link rel="prefetch" href="/realizacje" as="document">
+    <link rel="prefetch" href="/kontakt" as="document"> -->
+    
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Red+Hat+Display:wght@600;700&display=swap" rel="stylesheet" />
 
@@ -30,6 +33,22 @@
 </head>
 
 <body>
+    <!-- PRELOADER -->
+<div class="c-preloader" aria-hidden="true">
+  <div class="c-preloader__inner">
+    <div class="c-preloader__ring" aria-hidden="true"></div>
+
+    <div class="c-preloader__percent" aria-live="polite">
+      <span class="js-preloader-percent">0</span><span>%</span>
+    </div>
+
+    <div class="c-preloader__bar" aria-hidden="true">
+      <div class="c-preloader__bar-fill js-preloader-bar"></div>
+    </div>
+
+    <div class="c-preloader__text">Ładowanie strony…</div>
+  </div>
+</div>
     <header class="l-header">
         <nav class="c-nav">
             <a href="/" class="c-nav__brand"><img src="assets/img/logo.svg" alt="Studio DESIGNIO" class="c-nav__logo"></a>
