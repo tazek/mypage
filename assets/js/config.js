@@ -22,7 +22,7 @@ window.addEventListener("load", function () {
     const overlay = nav?.querySelector(".c-nav__overlay");
     const links = nav?.querySelectorAll(".c-nav__link") || [];
     const bars = nav?.querySelectorAll(".c-nav__toggle-line") || [];
-    const overlayBrand = nav.querySelector(".c-nav__overlay-brand img");
+    const overlayBrand = nav?.querySelector(".c-nav__overlay-brand img");
 
     // =========================
     // NAV
@@ -33,10 +33,12 @@ window.addEventListener("load", function () {
             opacity: 0
         });
 
-        gsap.set(overlayBrand, {
-            y: 100,
-            opacity: 0
-        });
+        if (overlayBrand) {
+            gsap.set(overlayBrand, {
+                y: 100,
+                opacity: 0
+            });
+        }
 
         let tl = gsap.timeline({
             paused: true
@@ -50,12 +52,14 @@ window.addEventListener("load", function () {
             onReverseComplete: () => overlay.style.pointerEvents = "none"
         });
 
-        tl.to(overlayBrand, {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            ease: "power3.out"
-        }, "-=0.6");
+        if (overlayBrand) {
+            tl.to(overlayBrand, {
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                ease: "power3.out"
+            }, "-=0.6");
+        }
 
         tl.to(links, {
             y: 0,
@@ -158,10 +162,11 @@ window.addEventListener("load", function () {
 
         if (!sectionEl || !mediaEl || !contentEl) return;
 
-        // Startowy stan contentu (ważne przy refresh / restore scroll)
-        gsap.set(contentEl, { y: 0, opacity: 1 });
+        gsap.set(contentEl, {
+            y: 0,
+            opacity: 1
+        });
 
-        // Parallax tła / media wrapper
         gsap.to(mediaEl, {
             yPercent: mediaYPercent,
             ease: "none",
@@ -174,7 +179,6 @@ window.addEventListener("load", function () {
             }
         });
 
-        // Dodatkowy zoom obrazka / video
         if (bgEl) {
             gsap.to(bgEl, {
                 scale: bgScaleTo,
@@ -189,7 +193,6 @@ window.addEventListener("load", function () {
             });
         }
 
-        // Parallax contentu (tylko ruch, bez opacity)
         gsap.to(contentEl, {
             y: contentY,
             ease: "none",
@@ -368,6 +371,47 @@ window.addEventListener("load", function () {
     window.addEventListener("scroll", requestRevealUpdate, { passive: true });
 
     // =========================
+    // PROJECTS: REVEAL CARDS
+    // =========================
+    const projectCards = document.querySelectorAll(".js-project-card");
+
+    if (projectCards.length) {
+        const projectsObserver = new IntersectionObserver(
+            function (entries, obs) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-visible");
+                        obs.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.15,
+                rootMargin: "0px 0px -40px 0px"
+            }
+        );
+
+        projectCards.forEach(function (card, index) {
+            card.style.transitionDelay = (index * 80) + "ms";
+            projectsObserver.observe(card);
+        });
+    }
+
+    // =========================
+    // PROJECTS: FANCYBOX
+    // =========================
+    if (window.Fancybox) {
+        Fancybox.bind("[data-fancybox='projects-gallery']", {
+            Thumbs: false,
+            Toolbar: {
+                display: [
+                    { id: "close", position: "right" }
+                ]
+            }
+        });
+    }
+
+    // =========================
     // REFRESH / FIXY
     // =========================
     document.fonts.ready.then(() => {
@@ -402,17 +446,15 @@ window.addEventListener("load", function () {
             return;
         }
 
-        // Czy to jest kolejne wejście w tej samej sesji (tab)?
         const SESSION_KEY = "designio_has_loaded_once";
         const hasLoadedOnce = sessionStorage.getItem(SESSION_KEY) === "1";
 
-        // Ustawienia
-        const FAST_MIN_VISIBLE_MS = 260; // żeby nie "mignęło"
-        const SLOW_FAILSAFE_MS = 12000;  // awaryjne zdjęcie blokady na pierwszym wejściu
-        const FONTS_MAX_WAIT_MS = 700;   // nie blokuj Safari zbyt długo fontami
+        const FAST_MIN_VISIBLE_MS = 260;
+        const SLOW_FAILSAFE_MS = 12000;
+        const FONTS_MAX_WAIT_MS = 700;
         const MAX_BEFORE_READY = hasLoadedOnce ? 100 : 99;
 
-        let progress = hasLoadedOnce ? 80 : 12; // <-- ważne: nie startuj od 0 na Safari
+        let progress = hasLoadedOnce ? 80 : 12;
         let target = progress;
         let rafId = null;
         let finished = false;
@@ -427,52 +469,44 @@ window.addEventListener("load", function () {
         function computeTarget() {
             const cap = finished ? 100 : MAX_BEFORE_READY;
 
-            // Na kolejnych wejściach: szybciej i bez "czekania"
             if (hasLoadedOnce) {
                 target = 100;
                 return;
             }
 
-            // Pierwsze wejście: realistyczny progres, ale dochodzimy do 99
             if (progress < 60) {
-                target = Math.min(cap, progress + (Math.random() * 10 + 6)); // +6..16
+                target = Math.min(cap, progress + (Math.random() * 10 + 6));
             } else if (progress < 90) {
-                target = Math.min(cap, progress + (Math.random() * 5 + 2)); // +2..7
+                target = Math.min(cap, progress + (Math.random() * 5 + 2));
             } else {
-                target = Math.min(cap, progress + (Math.random() * 2.2 + 0.7)); // +0.7..2.9
+                target = Math.min(cap, progress + (Math.random() * 2.2 + 0.7));
             }
         }
 
         function lazyLoadVideos() {
             document.querySelectorAll("video[data-lazy-video]").forEach(video => {
-
-                // wariant 1: video[data-src]
                 const videoSrc = video.getAttribute("data-src");
                 if (videoSrc && !video.src) {
                     video.src = videoSrc;
                     video.removeAttribute("data-src");
                 }
 
-                // wariant 2: <source data-src="...">
                 const sources = video.querySelectorAll("source[data-src]");
                 sources.forEach(s => {
                     s.src = s.getAttribute("data-src");
                     s.removeAttribute("data-src");
                 });
 
-                // iOS/Safari: wymuś przeładowanie źródeł
                 try {
                     video.load();
                 } catch (e) {}
 
-                // autoplay bywa kapryśny – próbujemy, ale nie rzucamy błędów
                 try {
                     const p = video.play();
                     if (p && typeof p.catch === "function") {
                         p.catch(() => {});
                     }
                 } catch (e) {}
-
             });
         }
 
@@ -484,12 +518,10 @@ window.addEventListener("load", function () {
                 preloader.classList.add("is-hidden");
                 html.classList.remove("is-loading");
 
-                // odśwież ScrollTrigger po odsłonięciu
                 if (window.ScrollTrigger) {
                     ScrollTrigger.refresh();
                 }
 
-                // Dopiero teraz ładujemy wideo (Safari przestaje "wisieć")
                 lazyLoadVideos();
 
                 setTimeout(() => preloader.remove(), 650);
@@ -524,21 +556,18 @@ window.addEventListener("load", function () {
             rafId = requestAnimationFrame(tick);
         }
 
-        // START
         render();
         rafId = requestAnimationFrame(tick);
 
         async function markReady() {
             if (finished) return;
 
-            // DOMContentLoaded (bez czekania na video)
             if (document.readyState === "loading") {
                 await new Promise(resolve => {
                     document.addEventListener("DOMContentLoaded", resolve, { once: true });
                 });
             }
 
-            // fonty, ale max FONTS_MAX_WAIT_MS
             try {
                 if (document.fonts && document.fonts.ready) {
                     await Promise.race([
@@ -566,8 +595,6 @@ window.addEventListener("load", function () {
     })();
 
     (function () {
-
-        // Prefetchujemy tylko linki wewnętrzne (ta sama domena)
         const prefetched = new Set();
 
         function isInternalUrl(url) {
@@ -646,13 +673,11 @@ window.addEventListener("load", function () {
     let ticking = false;
 
     function recalcMaxScroll() {
-        // Cała wysokość dokumentu - wysokość okna
         maxScroll = Math.max(
             document.documentElement.scrollHeight,
             document.body.scrollHeight
         ) - window.innerHeight;
 
-        // Zabezpieczenie dla bardzo krótkich stron
         if (maxScroll < 1) maxScroll = 1;
     }
 
@@ -676,18 +701,13 @@ window.addEventListener("load", function () {
         requestUpdate();
     }
 
-    // Init
     recalcMaxScroll();
     updateProgress();
 
-    // Events
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", onResize);
-
-    // Dodatkowo po pełnym załadowaniu (obrazy/video mogą zmienić wysokość strony)
     window.addEventListener("load", onResize);
 
-    // Opcjonalnie: jeśli treść dynamicznie się zmienia (np. accordion, lazyload)
     if ("ResizeObserver" in window) {
         const ro = new ResizeObserver(() => {
             recalcMaxScroll();
