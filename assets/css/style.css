@@ -380,6 +380,7 @@ body.is-nav-open {
    8A. COMPONENTS: PROJECTS GALLERY
 ================================================== */
 .c-projects {
+    padding-bottom: 0;
     position: relative;
     overflow: visible;
 }
@@ -396,7 +397,7 @@ body.is-nav-open {
     color: var(--color-heading);
 }
 
-.c-projects__link {
+.c-services__link, .c-projects__link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -427,10 +428,11 @@ body.is-nav-open {
 }
 
 .c-projects__gallery-fluid {
-    position: relative;
-    overflow: visible;
+    margin-top: var(--section-space);
     padding-left: 12px;
     padding-right: 12px;
+    position: relative;
+    overflow: visible;
 }
 
 .c-projects-gallery {
@@ -466,10 +468,11 @@ body.is-nav-open {
 
 .c-projects-gallery__card.is-visible {
     opacity: 1;
+    transform: translateY(0);
 }
 
 .c-projects-gallery__card:hover {
-    box-shadow: 0 4.16rem 9.6rem rgba(0, 0, 0, 0.18);
+    box-shadow: none;
     z-index: 2;
 }
 
@@ -844,7 +847,7 @@ html.is-loading body > :not(.c-preloader) {
         --fs-700: 4.8rem;
         --fs-900: 7.04rem;
         --nav-underline-width: 50px;
-        --section-space: 9.6rem;
+        --section-space: 15rem;
     }
 
     .c-nav__logo {
