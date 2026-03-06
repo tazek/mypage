@@ -15,9 +15,9 @@
     --color-black: #111111;
     --color-accent: #e94310;
 
-    --fs-400: 2rem;
-    --fs-700: 4rem;
-    --fs-900: 5rem;
+    --fs-400: 1.2rem;
+    --fs-700: 2.6rem;
+    --fs-900: 3rem;
 
     --nav-height: 80px;
     --nav-underline-height: 2px;
@@ -26,7 +26,7 @@
     --section-space: 6.4rem;
 
     --container-max: 1140px;
-    --container-pad: 2.4rem;
+    --container-pad: 1.5rem;
     
     --scroll-progress-height: 2px;
     --scroll-progress-color: #e94310;
@@ -37,7 +37,7 @@
    2. BASE
 ================================================== */
 html {
-    font-size: 62.5%;
+    font-size: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -210,7 +210,7 @@ body.is-nav-open {
 }
 
 .c-nav__overlay-brand {
-    margin-bottom: 3.2rem;
+    margin-bottom: 2rem;
     overflow: hidden;
 }
 
@@ -225,7 +225,7 @@ body.is-nav-open {
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 1.6rem;
+    gap: 1rem;
 }
 
 .c-nav__link {
@@ -320,7 +320,7 @@ body.is-nav-open {
 }
 
 .c-hero__title {
-    margin-bottom: 1.44rem;
+    margin-bottom: 0.9rem;
     font-size: var(--fs-900);
     line-height: 1.05;
     color: var(--color-white);
@@ -328,9 +328,9 @@ body.is-nav-open {
 }
 
 .c-hero__subtitle {
-    max-width: 48rem;
-    margin: 0 auto 1.6rem;
-    font-size: 1.6rem;
+    max-width: 30rem;
+    margin: 0 auto 1rem;
+    font-size: 1rem;
     font-weight: 500;
     line-height: 1.4;
     letter-spacing: 0.03em;
@@ -339,7 +339,7 @@ body.is-nav-open {
 }
 
 .c-hero__lead {
-    max-width: 41.6rem;
+    max-width: 26rem;
     margin: 0 auto;
     font-size: var(--fs-400);
     line-height: 1.65;
@@ -380,30 +380,34 @@ body.is-nav-open {
    8A. COMPONENTS: PROJECTS GALLERY
 ================================================== */
 .c-projects {
-    padding-bottom: 0;
     position: relative;
     overflow: visible;
 }
 
+.c-projects__container {
+    margin-top: calc(var(--section-space) / 3);
+}
+
 .c-projects__intro {
-    max-width: 147.2rem;
-    margin: 0 auto 3.84rem;
+    max-width: 92rem;
+    margin: 0 auto 2.4rem;
     text-align: left;
 }
 
 .c-projects__title {
-    margin: 0 0 2.56rem;
+    margin: 0 0 1.6rem;
     font-size: var(--fs-700);
     color: var(--color-heading);
 }
 
-.c-services__link, .c-projects__link {
+.c-services__link,
+.c-projects__link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-height: 48px;
-    margin-top: 1.6rem;
-    padding: 1.92rem 3.2rem;
+    margin-top: 1rem;
+    padding: 1.2rem 2rem;
     border: 1px solid var(--color-heading);
     border-radius: 999px;
     font-size: var(--fs-400);
@@ -428,7 +432,7 @@ body.is-nav-open {
 }
 
 .c-projects__gallery-fluid {
-    margin-top: var(--section-space);
+    margin-top: calc(var(--section-space) / 3);
     padding-left: 12px;
     padding-right: 12px;
     position: relative;
@@ -456,9 +460,9 @@ body.is-nav-open {
     height: 100%;
     overflow: hidden;
     background-color: var(--color-black);
-    box-shadow: 0 3.2rem 8rem rgba(0, 0, 0, 0.14);
+    box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.14);
     opacity: 0;
-    transform: translateY(4.8rem);
+    transform: translateY(3rem);
     transition:
         opacity 550ms ease,
         transform 550ms ease,
@@ -505,7 +509,7 @@ body.is-nav-open {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2.88rem;
+    padding: 1.8rem;
     background: rgba(0, 0, 0, 0.52);
     text-align: center;
     opacity: 1;
@@ -520,12 +524,12 @@ body.is-nav-open {
 
 .c-projects-gallery__content {
     width: 100%;
-    max-width: 67.2rem;
+    max-width: 42rem;
     margin: 0 auto;
 }
 
 .c-projects-gallery__title {
-    margin: 0 0 1.28rem;
+    margin: 0 0 0.8rem;
     font-family: 'Red Hat Display', sans-serif;
     font-optical-sizing: auto;
     font-weight: 700;
@@ -562,7 +566,7 @@ body.is-nav-open {
 ================================================== */
 .js-reveal {
     opacity: 0;
-    transform: translateY(6.4rem);
+    transform: translateY(4rem);
 }
 
 /* ==================================================
@@ -610,18 +614,18 @@ body.is-nav-open {
 }
 
 .c-cta__title {
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.75rem;
     color: var(--color-white);
 }
 
 .c-cta__text {
-    margin-bottom: 2rem;
+    margin-bottom: 1.25rem;
     color: var(--color-white);
 }
 
 .c-cta__button {
     display: inline-block;
-    padding: 1.2rem 2rem;
+    padding: 0.75rem 1.25rem;
     background: var(--color-white);
     color: var(--color-black);
     text-decoration: none;
@@ -697,11 +701,11 @@ html.is-loading body > :not(.c-preloader) {
 }
 
 .c-preloader__inner {
-    width: min(67.2rem, calc(100% - 4.8rem));
+    width: min(42rem, calc(100% - 3rem));
     text-align: center;
     justify-items: center;
     display: grid;
-    gap: 2.24rem;
+    gap: 1.4rem;
 }
 
 .c-preloader__ring {
@@ -715,7 +719,7 @@ html.is-loading body > :not(.c-preloader) {
 
 .c-preloader__percent {
     font-family: 'Red Hat Display', sans-serif;
-    font-size: 3.52rem;
+    font-size: 2.2rem;
     line-height: 1;
     color: var(--color-heading);
 }
@@ -739,7 +743,7 @@ html.is-loading body > :not(.c-preloader) {
 
 .c-preloader__text {
     font-family: 'Inter', sans-serif;
-    font-size: 2.24rem;
+    font-size: 1.4rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--color-text);
@@ -753,8 +757,9 @@ html.is-loading body > :not(.c-preloader) {
    12. RESPONSIVE
 ================================================== */
 @media (min-width: 576px) {
+    
     :root {
-        --fs-700: 3.84rem;
+        --fs-700: 2.4rem;
         --section-space: 8rem;
     }
 
@@ -763,20 +768,22 @@ html.is-loading body > :not(.c-preloader) {
     }
     
     .c-hero__subtitle {
-        max-width: 54.4rem;
-        font-size: 1.76rem;
+        max-width: 34rem;
+        font-size: 1.1rem;
     }
 
     .c-hero__lead {
-        max-width: 48rem;
+        max-width: 30rem;
     }
 
     .c-projects__intro {
         text-align: center;
     }
+    
 }
 
 @media (min-width: 768px) {
+    
     .c-projects__gallery-fluid {
         padding-left: 0;
         padding-right: 0;
@@ -799,11 +806,11 @@ html.is-loading body > :not(.c-preloader) {
     .c-projects-gallery__card {
         border-radius: 0;
         box-shadow: none;
-        transform: translateY(6.4rem);
+        transform: translateY(4rem);
     }
 
     .c-projects-gallery__overlay {
-        padding: 3.52rem;
+        padding: 2.2rem;
         opacity: 0;
         visibility: hidden;
         transform: scale(0.98);
@@ -811,12 +818,12 @@ html.is-loading body > :not(.c-preloader) {
 
     .c-projects-gallery__title {
         opacity: 0;
-        transform: translateY(2.88rem) scale(0.96);
+        transform: translateY(1.8rem) scale(0.96);
     }
 
     .c-projects-gallery__description {
         opacity: 0;
-        transform: translateY(3.52rem);
+        transform: translateY(2.2rem);
     }
 
     .c-projects-gallery__card:hover .c-projects-gallery__image,
@@ -840,14 +847,17 @@ html.is-loading body > :not(.c-preloader) {
         transform: translateY(0) scale(1);
         filter: blur(0);
     }
+    
 }
 
 @media (min-width: 992px) {
+    
     :root {
-        --fs-700: 4.8rem;
-        --fs-900: 7.04rem;
+        --fs-400: 1.2rem;
+        --fs-700: 3.4rem;
+        --fs-900: 4.6rem;
         --nav-underline-width: 50px;
-        --section-space: 15rem;
+        --section-space: 8rem;
     }
 
     .c-nav__logo {
@@ -859,19 +869,19 @@ html.is-loading body > :not(.c-preloader) {
     }
     
     .c-hero__title {
-        margin-bottom: 1.76rem;
+        margin-bottom: 1.1rem;
     }
 
     .c-hero__subtitle {
-        max-width: 67.2rem;
-        margin-bottom: 1.92rem;
-        font-size: 2.16rem;
+        max-width: 42rem;
+        margin-bottom: 1.2rem;
+        font-size: 1.35rem;
         line-height: 1.35;
     }
 
     .c-hero__lead {
-        max-width: 57.6rem;
-        font-size: 1.68rem;
+        max-width: 36rem;
+        font-size: 1.05rem;
     }
 
     .c-nav__overlay {
@@ -895,11 +905,11 @@ html.is-loading body > :not(.c-preloader) {
     .c-nav__list {
         flex-direction: row;
         align-items: center;
-        gap: 3.2rem;
+        gap: 2rem;
     }
 
     .c-nav__link {
-        font-size: 1.52rem;
+        font-size: 0.95rem;
         color: var(--color-text-nav-desktop);
         opacity: 1 !important;
         transform: none !important;
@@ -914,7 +924,7 @@ html.is-loading body > :not(.c-preloader) {
     }
 
     .l-container {
-        max-width: min(100% - 4.8rem, var(--container-max));
+        max-width: min(100% - 3rem, var(--container-max));
     }
 
     .l-section--cta {
@@ -922,12 +932,15 @@ html.is-loading body > :not(.c-preloader) {
     }
 
     .c-projects__intro {
-        margin-bottom: 4.8rem;
+        margin-bottom: 4rem;
     }
+    
 }
 
 @media (min-width: 1200px) {
+    
     .c-projects__intro {
-        margin-bottom: 6.4rem;
+        margin-bottom: 4rem;
     }
+    
 }
