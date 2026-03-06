@@ -370,32 +370,99 @@ window.addEventListener("load", function () {
 
     window.addEventListener("scroll", requestRevealUpdate, { passive: true });
 
+   // =========================
+    // PROJECTS: REVEAL GALLERY LIKE TEXT
     // =========================
-    // PROJECTS: REVEAL CARDS
-    // =========================
-    const projectCards = document.querySelectorAll(".js-project-card");
+    const projectsSection = document.querySelector("#nasze-prace");
+    const projectCards = projectsSection?.querySelectorAll(".js-project-card") || [];
+    let projectsVisible = false;
 
-    if (projectCards.length) {
-        const projectsObserver = new IntersectionObserver(
-            function (entries, obs) {
-                entries.forEach(function (entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("is-visible");
-                        obs.unobserve(entry.target);
-                    }
-                });
-            },
-            {
-                threshold: 0.15,
-                rootMargin: "0px 0px -40px 0px"
-            }
-        );
+    function showProjectCards(immediate = false) {
+        if (!projectCards.length) return;
 
-        projectCards.forEach(function (card, index) {
-            card.style.transitionDelay = (index * 80) + "ms";
-            projectsObserver.observe(card);
+        gsap.killTweensOf(projectCards);
+
+        if (immediate) {
+            gsap.set(projectCards, {
+                y: 0,
+                opacity: 1
+            });
+            projectsVisible = true;
+            return;
+        }
+
+        gsap.to(projectCards, {
+            y: 0,
+            opacity: 1,
+            stagger: 0.12,
+            duration: 0.8,
+            ease: "power2.out",
+            overwrite: true
         });
+
+        projectsVisible = true;
     }
+
+    function hideProjectCards(immediate = false) {
+        if (!projectCards.length) return;
+
+        gsap.killTweensOf(projectCards);
+
+        if (immediate) {
+            gsap.set(projectCards, {
+                y: 48,
+                opacity: 0
+            });
+            projectsVisible = false;
+            return;
+        }
+
+        gsap.to(projectCards, {
+            y: 48,
+            opacity: 0,
+            stagger: 0.07,
+            duration: 0.8,
+            ease: "power2.out",
+            overwrite: true
+        });
+
+        projectsVisible = false;
+    }
+
+    function updateProjectsReveal(immediate = false) {
+        if (!projectsSection || !projectCards.length) return;
+
+        const viewportCenter = window.innerHeight / 2;
+        const rect = projectsSection.getBoundingClientRect();
+        const isActive = rect.top <= viewportCenter && rect.bottom >= viewportCenter;
+
+        if (isActive && !projectsVisible) {
+            showProjectCards(immediate);
+        } else if (!isActive && projectsVisible) {
+            hideProjectCards(immediate);
+        } else if (immediate) {
+            if (isActive) {
+                showProjectCards(true);
+            } else {
+                hideProjectCards(true);
+            }
+        }
+    }
+
+    gsap.set(projectCards, {
+        y: 48,
+        opacity: 0
+    });
+
+    requestAnimationFrame(() => {
+        updateProjectsReveal(true);
+    });
+
+    window.addEventListener("scroll", () => {
+        requestAnimationFrame(() => {
+            updateProjectsReveal(false);
+        });
+    }, { passive: true });
 
     // =========================
     // PROJECTS: FANCYBOX

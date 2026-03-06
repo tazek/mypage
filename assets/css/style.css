@@ -461,13 +461,7 @@ body.is-nav-open {
     overflow: hidden;
     background-color: var(--color-black);
     box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.14);
-    opacity: 0;
-    transform: translateY(3rem);
-    transition:
-        opacity 550ms ease,
-        transform 550ms ease,
-        box-shadow 300ms ease;
-    will-change: transform;
+    will-change: transform, opacity;
 }
 
 .c-projects-gallery__card.is-visible {
@@ -806,7 +800,6 @@ html.is-loading body > :not(.c-preloader) {
     .c-projects-gallery__card {
         border-radius: 0;
         box-shadow: none;
-        transform: translateY(4rem);
     }
 
     .c-projects-gallery__overlay {
