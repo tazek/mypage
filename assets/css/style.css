@@ -319,27 +319,70 @@ body.is-nav-open {
 }
 
 .c-hero__title {
+    margin-bottom: 0.9rem;
     font-size: var(--fs-900);
+    line-height: 1.05;
     color: var(--color-white);
     text-transform: uppercase;
 }
 
+.c-hero__subtitle {
+    max-width: 30rem;
+    margin: 0 auto 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: none;
+}
+
 .c-hero__lead {
-    color: var(--color-white);
+    max-width: 26rem;
+    margin: 0 auto;
+    font-size: var(--fs-400);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.82);
 }
 
 /* ==================================================
-   8. COMPONENTS: REVEAL
+   8. COMPONENTS: CONTENT SECTIONS
 ================================================== */
-.c-reveal__title,
-.c-reveal__text,
-.c-reveal__link {
+.c-services__title,
+.c-projects__title,
+.c-about__title {
+    margin-bottom: 1.5rem;
+}
+
+.c-services__text,
+.c-projects__text,
+.c-about__text {
+    margin: 0 0 1.2rem;
+    line-height: 1.8;
+}
+
+.c-services__link,
+.c-projects__link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.c-services__link:hover,
+.c-projects__link:hover {
+    text-decoration: none;
+}
+
+/* ==================================================
+   9. JS HOOKS: REVEAL
+================================================== */
+.js-reveal {
     opacity: 0;
     transform: translateY(40px);
 }
 
 /* ==================================================
-   9. COMPONENTS: CTA
+   10. COMPONENTS: CTA
 ================================================== */
 .l-section--cta {
     position: relative;
@@ -433,7 +476,7 @@ body.is-nav-open {
 }
 
 /* ==================================================
-   10. COMPONENTS: FOOTER
+   11. COMPONENTS: FOOTER
 ================================================== */
 /* .c-footer { ... } */
 
@@ -516,7 +559,6 @@ html.is-loading body > :not(.c-preloader) {
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--color-text);
-    
 }
 
 @keyframes preloaderSpin {
@@ -524,7 +566,7 @@ html.is-loading body > :not(.c-preloader) {
 }
 
 /* ==================================================
-   11. RESPONSIVE
+   12. RESPONSIVE
 ================================================== */
 @media (min-width: 576px) {
     :root {
@@ -534,6 +576,15 @@ html.is-loading body > :not(.c-preloader) {
 
     .c-nav__logo {
         height: 44px;
+    }
+    
+    .c-hero__subtitle {
+        max-width: 34rem;
+        font-size: 1.1rem;
+    }
+
+    .c-hero__lead {
+        max-width: 30rem;
     }
 }
 
@@ -551,6 +602,22 @@ html.is-loading body > :not(.c-preloader) {
 
     .c-nav__toggle {
         display: none;
+    }
+    
+    .c-hero__title {
+        margin-bottom: 1.1rem;
+    }
+
+    .c-hero__subtitle {
+        max-width: 42rem;
+        margin-bottom: 1.2rem;
+        font-size: 1.35rem;
+        line-height: 1.35;
+    }
+
+    .c-hero__lead {
+        max-width: 36rem;
+        font-size: 1.05rem;
     }
 
     .c-nav__overlay {

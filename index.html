@@ -82,10 +82,10 @@
         </nav>
     </header>
     <main>
-        <section class="l-section l-section--hero">
+        <section class="c-hero l-section l-section--hero">
             <div class="c-hero__media">
-                <video class="c-hero__video" autoplay muted loop playsinline preload="none">
-                    <source src="assets/video/home.mp4" type="video/mp4" />
+                <video class="c-hero__video" autoplay muted loop playsinline preload="none" data-lazy-video>
+                    <source data-src="assets/video/home.mp4" type="video/mp4" />
                 </video>
             </div>
             <div class="c-section__inner">
@@ -94,6 +94,7 @@
                         <div class="col-12">
                             <div class="c-hero__parallax">
                                 <h1 class="c-hero__title">Tworzymy nowoczesne strony internetowe</h1>
+                                <h2 class="c-hero__subtitle">Strony www i identyfikacja wizualna dla nowoczesnych marek</h2>
                                 <p class="t-lead c-hero__lead">Dla firm, wynajmów, apartamentów i osób prywatnych</p>
                             </div>
                         </div>
@@ -101,51 +102,55 @@
                 </div>
             </div>
         </section>
-        <section id="co-robimy" class="l-section l-section--services u-py-section c-reveal">
+        
+        <section id="co-robimy" class="l-section l-section--services u-py-section c-services">
             <div class="c-section__inner">
                 <div class="container l-container">
                     <div class="row">
                         <div class="col-12 col-lg-7">
-                            <h2 class="c-reveal__title">Co możemy dla Ciebie zrobić?</h2>
-                            <p class="c-reveal__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultricies purus nec iaculis hendrerit. Suspendisse potenti. Maecenas pulvinar, dui a fermentum sollicitudin, ligula leo venenatis sapien, quis vulputate metus nulla non sapien. Donec non dictum nunc. Etiam vitae mauris scelerisque purus maximus venenatis. Vestibulum id tellus ac tellus condimentum pulvinar. Maecenas eros ipsum, consectetur rutrum aliquam id, tempus nec eros. Nulla hendrerit, lacus at tempus sagittis, est mauris malesuada quam, ut faucibus mauris velit a tellus. Pellentesque hendrerit ligula nisl, vitae egestas nisl dignissim sed. Praesent eleifend cursus urna at faucibus. Praesent semper, elit in tincidunt egestas, diam nulla vestibulum lectus, ut dictum ligula tortor vitae ante. Donec feugiat augue non urna ultrices, at sollicitudin dolor cursus. Nam fringilla mauris nec orci malesuada iaculis. Aliquam erat volutpat.</p>
-                            <p class="c-reveal__text">Aliquam posuere feugiat tellus, a varius massa semper ac. Sed tempor nibh quis lectus vestibulum tempor. Cras non enim quis arcu suscipit laoreet. Suspendisse hendrerit blandit ipsum, feugiat gravida nisi gravida vel. Fusce non metus eu ipsum rhoncus scelerisque. Etiam elit ligula, condimentum eget lectus at, blandit euismod libero. Vestibulum quis magna ac dolor pulvinar elementum. Etiam scelerisque volutpat nisi vestibulum pellentesque. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce blandit quis ante non porttitor. Aenean vestibulum rhoncus eros vel bibendum. Vestibulum faucibus leo at rutrum rhoncus. Suspendisse potenti. Morbi quis finibus ex, nec cursus ipsum. </p>
-                            <a href="#" class="c-reveal__link">Zobacz więcej</a>
+                            <h2 class="c-services__title js-reveal">Co możemy dla Ciebie zrobić?</h2>
+                            <p class="c-services__text js-reveal">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultricies purus nec iaculis hendrerit. Suspendisse potenti. Maecenas pulvinar, dui a fermentum sollicitudin, ligula leo venenatis sapien, quis vulputate metus nulla non sapien. Donec non dictum nunc. Etiam vitae mauris scelerisque purus maximus venenatis. Vestibulum id tellus ac tellus condimentum pulvinar. Maecenas eros ipsum, consectetur rutrum aliquam id, tempus nec eros. Nulla hendrerit, lacus at tempus sagittis, est mauris malesuada quam, ut faucibus mauris velit a tellus. Pellentesque hendrerit ligula nisl, vitae egestas nisl dignissim sed. Praesent eleifend cursus urna at faucibus. Praesent semper, elit in tincidunt egestas, diam nulla vestibulum lectus, ut dictum ligula tortor vitae ante. Donec feugiat augue non urna ultrices, at sollicitudin dolor cursus. Nam fringilla mauris nec orci malesuada iaculis. Aliquam erat volutpat.</p>
+                            <p class="c-services__text js-reveal">Aliquam posuere feugiat tellus, a varius massa semper ac. Sed tempor nibh quis lectus vestibulum tempor. Cras non enim quis arcu suscipit laoreet. Suspendisse hendrerit blandit ipsum, feugiat gravida nisi gravida vel. Fusce non metus eu ipsum rhoncus scelerisque. Etiam elit ligula, condimentum eget lectus at, blandit euismod libero. Vestibulum quis magna ac dolor pulvinar elementum. Etiam scelerisque volutpat nisi vestibulum pellentesque. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce blandit quis ante non porttitor. Aenean vestibulum rhoncus eros vel bibendum. Vestibulum faucibus leo at rutrum rhoncus. Suspendisse potenti. Morbi quis finibus ex, nec cursus ipsum.</p>
+                            <a href="#" class="c-services__link js-reveal">Zobacz więcej</a>
                         </div>
                         <div class="col-12 col-lg-5 mt-4 mt-lg-0">
-                    
+
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section id="nasze-prace" class="l-section l-section--realizations u-py-section c-reveal">
+        
+        <section id="nasze-prace" class="l-section l-section--realizations u-py-section c-projects">
             <div class="c-section__inner">
                 <div class="container l-container">
                     <div class="row">
                         <div class="col-12 col-lg-7">
-                            <h2 class="c-reveal__title">Nowoczesne projekty</h2>
-                            <p class="c-reveal__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultricies purus nec iaculis hendrerit. Suspendisse potenti. Maecenas pulvinar, dui a fermentum sollicitudin, ligula leo venenatis sapien, quis vulputate metus nulla non sapien. Donec non dictum nunc. Etiam vitae mauris scelerisque purus maximus venenatis. Vestibulum id tellus ac tellus condimentum pulvinar. Maecenas eros ipsum, consectetur rutrum aliquam id, tempus nec eros. Nulla hendrerit, lacus at tempus sagittis, est mauris malesuada quam, ut faucibus mauris velit a tellus. Pellentesque hendrerit ligula nisl, vitae egestas nisl dignissim sed. Praesent eleifend cursus urna at faucibus. Praesent semper, elit in tincidunt egestas, diam nulla vestibulum lectus, ut dictum ligula tortor vitae ante. Donec feugiat augue non urna ultrices, at sollicitudin dolor cursus. Nam fringilla mauris nec orci malesuada iaculis. Aliquam erat volutpat.</p>
-                            <p class="c-reveal__text">Aliquam posuere feugiat tellus, a varius massa semper ac. Sed tempor nibh quis lectus vestibulum tempor. Cras non enim quis arcu suscipit laoreet. Suspendisse hendrerit blandit ipsum, feugiat gravida nisi gravida vel. Fusce non metus eu ipsum rhoncus scelerisque. Etiam elit ligula, condimentum eget lectus at, blandit euismod libero. Vestibulum quis magna ac dolor pulvinar elementum. Etiam scelerisque volutpat nisi vestibulum pellentesque. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce blandit quis ante non porttitor. Aenean vestibulum rhoncus eros vel bibendum. Vestibulum faucibus leo at rutrum rhoncus. Suspendisse potenti. Morbi quis finibus ex, nec cursus ipsum. </p>
-                            <a href="#" class="c-reveal__link">Zobacz więcej</a>
+                            <h2 class="c-projects__title js-reveal">Nowoczesne projekty</h2>
+                            <p class="c-projects__text js-reveal">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultricies purus nec iaculis hendrerit. Suspendisse potenti. Maecenas pulvinar, dui a fermentum sollicitudin, ligula leo venenatis sapien, quis vulputate metus nulla non sapien. Donec non dictum nunc. Etiam vitae mauris scelerisque purus maximus venenatis. Vestibulum id tellus ac tellus condimentum pulvinar. Maecenas eros ipsum, consectetur rutrum aliquam id, tempus nec eros. Nulla hendrerit, lacus at tempus sagittis, est mauris malesuada quam, ut faucibus mauris velit a tellus. Pellentesque hendrerit ligula nisl, vitae egestas nisl dignissim sed. Praesent eleifend cursus urna at faucibus. Praesent semper, elit in tincidunt egestas, diam nulla vestibulum lectus, ut dictum ligula tortor vitae ante. Donec feugiat augue non urna ultrices, at sollicitudin dolor cursus. Nam fringilla mauris nec orci malesuada iaculis. Aliquam erat volutpat.</p>
+                            <p class="c-projects__text js-reveal">Aliquam posuere feugiat tellus, a varius massa semper ac. Sed tempor nibh quis lectus vestibulum tempor. Cras non enim quis arcu suscipit laoreet. Suspendisse hendrerit blandit ipsum, feugiat gravida nisi gravida vel. Fusce non metus eu ipsum rhoncus scelerisque. Etiam elit ligula, condimentum eget lectus at, blandit euismod libero. Vestibulum quis magna ac dolor pulvinar elementum. Etiam scelerisque volutpat nisi vestibulum pellentesque. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce blandit quis ante non porttitor. Aenean vestibulum rhoncus eros vel bibendum. Vestibulum faucibus leo at rutrum rhoncus. Suspendisse potenti. Morbi quis finibus ex, nec cursus ipsum.</p>
+                            <a href="#" class="c-projects__link js-reveal">Zobacz więcej</a>
                         </div>
                         <div class="col-12 col-lg-5 mt-4 mt-lg-0">
-                    
+
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section id="o-firmie" class="l-section l-section--about u-py-section c-reveal">
+        
+        
+        <section id="o-firmie" class="l-section l-section--about u-py-section c-about">
             <div class="c-section__inner">
                 <div class="container l-container">
                     <div class="row">
                         <div class="col-12 col-lg-7">
-                            <h2 class="c-reveal__title">O firmie</h2>
-                            <p class="c-reveal__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultricies purus nec iaculis hendrerit. Suspendisse potenti. Maecenas pulvinar, dui a fermentum sollicitudin, ligula leo venenatis sapien, quis vulputate metus nulla non sapien. Donec non dictum nunc. Etiam vitae mauris scelerisque purus maximus venenatis. Vestibulum id tellus ac tellus condimentum pulvinar. Maecenas eros ipsum, consectetur rutrum aliquam id, tempus nec eros. Nulla hendrerit, lacus at tempus sagittis, est mauris malesuada quam, ut faucibus mauris velit a tellus. Pellentesque hendrerit ligula nisl, vitae egestas nisl dignissim sed. Praesent eleifend cursus urna at faucibus. Praesent semper, elit in tincidunt egestas, diam nulla vestibulum lectus, ut dictum ligula tortor vitae ante. Donec feugiat augue non urna ultrices, at sollicitudin dolor cursus. Nam fringilla mauris nec orci malesuada iaculis. Aliquam erat volutpat.</p>
-                            <p class="c-reveal__text">Aliquam posuere feugiat tellus, a varius massa semper ac. Sed tempor nibh quis lectus vestibulum tempor. Cras non enim quis arcu suscipit laoreet. Suspendisse hendrerit blandit ipsum, feugiat gravida nisi gravida vel. Fusce non metus eu ipsum rhoncus scelerisque. Etiam elit ligula, condimentum eget lectus at, blandit euismod libero. Vestibulum quis magna ac dolor pulvinar elementum. Etiam scelerisque volutpat nisi vestibulum pellentesque. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce blandit quis ante non porttitor. Aenean vestibulum rhoncus eros vel bibendum. Vestibulum faucibus leo at rutrum rhoncus. Suspendisse potenti. Morbi quis finibus ex, nec cursus ipsum. </p>
+                            <h2 class="c-about__title js-reveal">O firmie</h2>
+                            <p class="c-about__text js-reveal">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultricies purus nec iaculis hendrerit. Suspendisse potenti. Maecenas pulvinar, dui a fermentum sollicitudin, ligula leo venenatis sapien, quis vulputate metus nulla non sapien. Donec non dictum nunc. Etiam vitae mauris scelerisque purus maximus venenatis. Vestibulum id tellus ac tellus condimentum pulvinar. Maecenas eros ipsum, consectetur rutrum aliquam id, tempus nec eros. Nulla hendrerit, lacus at tempus sagittis, est mauris malesuada quam, ut faucibus mauris velit a tellus. Pellentesque hendrerit ligula nisl, vitae egestas nisl dignissim sed. Praesent eleifend cursus urna at faucibus. Praesent semper, elit in tincidunt egestas, diam nulla vestibulum lectus, ut dictum ligula tortor vitae ante. Donec feugiat augue non urna ultrices, at sollicitudin dolor cursus. Nam fringilla mauris nec orci malesuada iaculis. Aliquam erat volutpat.</p>
+                            <p class="c-about__text js-reveal">Aliquam posuere feugiat tellus, a varius massa semper ac. Sed tempor nibh quis lectus vestibulum tempor. Cras non enim quis arcu suscipit laoreet. Suspendisse hendrerit blandit ipsum, feugiat gravida nisi gravida vel. Fusce non metus eu ipsum rhoncus scelerisque. Etiam elit ligula, condimentum eget lectus at, blandit euismod libero. Vestibulum quis magna ac dolor pulvinar elementum. Etiam scelerisque volutpat nisi vestibulum pellentesque. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce blandit quis ante non porttitor. Aenean vestibulum rhoncus eros vel bibendum. Vestibulum faucibus leo at rutrum rhoncus. Suspendisse potenti. Morbi quis finibus ex, nec cursus ipsum.</p>
                         </div>
                         <div class="col-12 col-lg-5 mt-4 mt-lg-0">
-                    
+
                         </div>
                     </div>
                 </div>

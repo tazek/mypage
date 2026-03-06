@@ -234,12 +234,32 @@ window.addEventListener("load", function () {
     });
 
     // =========================
-    // REVEAL SEKCJI (sekwencyjny)
+    // REVEAL SEKCJI (aktywny środek viewportu)
     // =========================
-    const revealSections = document.querySelectorAll(".c-reveal");
+    const revealSections = Array.from(document.querySelectorAll(".l-section")).filter(section => {
+        return section.querySelector(".js-reveal");
+    });
 
-    function showRevealSection(section) {
-        const elements = section.querySelectorAll(".c-reveal__title, .c-reveal__text, .c-reveal__link");
+    let activeRevealSection = null;
+    let revealTicking = false;
+
+    function getRevealElements(section) {
+        return section.querySelectorAll(".js-reveal");
+    }
+
+    function showRevealSection(section, immediate = false) {
+        const elements = getRevealElements(section);
+        if (!elements.length) return;
+
+        gsap.killTweensOf(elements);
+
+        if (immediate) {
+            gsap.set(elements, {
+                y: 0,
+                opacity: 1
+            });
+            return;
+        }
 
         gsap.to(elements, {
             y: 0,
@@ -247,42 +267,105 @@ window.addEventListener("load", function () {
             stagger: 0.08,
             duration: 0.45,
             ease: "power3.out",
-            overwrite: "auto"
+            overwrite: true
         });
     }
 
-    function hideRevealSection(section) {
-        const elements = section.querySelectorAll(".c-reveal__title, .c-reveal__text, .c-reveal__link");
+    function hideRevealSection(section, immediate = false) {
+        const elements = getRevealElements(section);
+        if (!elements.length) return;
+
+        gsap.killTweensOf(elements);
+
+        if (immediate) {
+            gsap.set(elements, {
+                y: 40,
+                opacity: 0
+            });
+            return;
+        }
 
         gsap.to(elements, {
             y: 40,
             opacity: 0,
-            stagger: 0.05,
-            duration: 0.3,
-            ease: "power2.in",
-            overwrite: "auto"
+            stagger: 0.04,
+            duration: 0.25,
+            ease: "power2.out",
+            overwrite: true
+        });
+    }
+
+    function getActiveRevealSection() {
+        const viewportCenter = window.innerHeight / 2;
+
+        for (const section of revealSections) {
+            const rect = section.getBoundingClientRect();
+
+            if (rect.top <= viewportCenter && rect.bottom >= viewportCenter) {
+                return section;
+            }
+        }
+
+        return null;
+    }
+
+    function setRevealState(immediate = false) {
+        const nextActiveSection = getActiveRevealSection();
+
+        revealSections.forEach(section => {
+            if (section === nextActiveSection) {
+                showRevealSection(section, immediate);
+            } else {
+                hideRevealSection(section, immediate);
+            }
+        });
+
+        activeRevealSection = nextActiveSection;
+    }
+
+    function updateRevealState() {
+        const nextActiveSection = getActiveRevealSection();
+
+        if (nextActiveSection === activeRevealSection) return;
+
+        revealSections.forEach(section => {
+            if (section === nextActiveSection) {
+                showRevealSection(section, false);
+            } else if (section === activeRevealSection) {
+                hideRevealSection(section, false);
+            } else {
+                hideRevealSection(section, true);
+            }
+        });
+
+        activeRevealSection = nextActiveSection;
+    }
+
+    function requestRevealUpdate() {
+        if (revealTicking) return;
+
+        revealTicking = true;
+
+        requestAnimationFrame(() => {
+            updateRevealState();
+            revealTicking = false;
         });
     }
 
     revealSections.forEach(section => {
-        const elements = section.querySelectorAll(".c-reveal__title, .c-reveal__text, .c-reveal__link");
+        const elements = getRevealElements(section);
 
-        // Stan początkowy
         gsap.set(elements, {
             y: 40,
             opacity: 0
         });
-
-        ScrollTrigger.create({
-            trigger: section,
-            start: "top 70%",
-            end: "bottom 35%",
-            onEnter: () => showRevealSection(section),
-            onLeave: () => hideRevealSection(section),
-            onEnterBack: () => showRevealSection(section),
-            onLeaveBack: () => hideRevealSection(section)
-        });
     });
+
+    requestAnimationFrame(() => {
+        setRevealState(true);
+    });
+
+    window.addEventListener("scroll", requestRevealUpdate, { passive: true });
 
     // =========================
     // REFRESH / FIXY
@@ -299,6 +382,7 @@ window.addEventListener("load", function () {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
             ScrollTrigger.refresh();
+            setRevealState(true);
         }, 250);
     });
 
@@ -325,10 +409,11 @@ window.addEventListener("load", function () {
         // Ustawienia
         const FAST_MIN_VISIBLE_MS = 260; // żeby nie "mignęło"
         const SLOW_FAILSAFE_MS = 12000;  // awaryjne zdjęcie blokady na pierwszym wejściu
-        const MAX_BEFORE_LOAD = hasLoadedOnce ? 100 : 99; // na kolejnych wejściach możemy od razu dobić
+        const FONTS_MAX_WAIT_MS = 700;   // nie blokuj Safari zbyt długo fontami
+        const MAX_BEFORE_READY = hasLoadedOnce ? 100 : 99;
 
-        let progress = 0;
-        let target = 0;
+        let progress = hasLoadedOnce ? 80 : 12; // <-- ważne: nie startuj od 0 na Safari
+        let target = progress;
         let rafId = null;
         let finished = false;
         const startTs = performance.now();
@@ -340,7 +425,7 @@ window.addEventListener("load", function () {
         }
 
         function computeTarget() {
-            const cap = finished ? 100 : MAX_BEFORE_LOAD;
+            const cap = finished ? 100 : MAX_BEFORE_READY;
 
             // Na kolejnych wejściach: szybciej i bez "czekania"
             if (hasLoadedOnce) {
@@ -351,15 +436,47 @@ window.addEventListener("load", function () {
             // Pierwsze wejście: realistyczny progres, ale dochodzimy do 99
             if (progress < 60) {
                 target = Math.min(cap, progress + (Math.random() * 10 + 6)); // +6..16
-            } else if (progress < 88) {
-                target = Math.min(cap, progress + (Math.random() * 5 + 2));  // +2..7
+            } else if (progress < 90) {
+                target = Math.min(cap, progress + (Math.random() * 5 + 2)); // +2..7
             } else {
-                target = Math.min(cap, progress + (Math.random() * 2.5 + 0.6)); // +0.6..3.1
+                target = Math.min(cap, progress + (Math.random() * 2.2 + 0.7)); // +0.7..2.9
             }
         }
 
+        function lazyLoadVideos() {
+            document.querySelectorAll("video[data-lazy-video]").forEach(video => {
+
+                // wariant 1: video[data-src]
+                const videoSrc = video.getAttribute("data-src");
+                if (videoSrc && !video.src) {
+                    video.src = videoSrc;
+                    video.removeAttribute("data-src");
+                }
+
+                // wariant 2: <source data-src="...">
+                const sources = video.querySelectorAll("source[data-src]");
+                sources.forEach(s => {
+                    s.src = s.getAttribute("data-src");
+                    s.removeAttribute("data-src");
+                });
+
+                // iOS/Safari: wymuś przeładowanie źródeł
+                try {
+                    video.load();
+                } catch (e) {}
+
+                // autoplay bywa kapryśny – próbujemy, ale nie rzucamy błędów
+                try {
+                    const p = video.play();
+                    if (p && typeof p.catch === "function") {
+                        p.catch(() => {});
+                    }
+                } catch (e) {}
+
+            });
+        }
+
         function hideWhenAllowed() {
-            // Na kolejnych wejściach: nie chowaj szybciej niż FAST_MIN_VISIBLE_MS
             const elapsed = performance.now() - startTs;
             const wait = Math.max(0, FAST_MIN_VISIBLE_MS - elapsed);
 
@@ -367,10 +484,13 @@ window.addEventListener("load", function () {
                 preloader.classList.add("is-hidden");
                 html.classList.remove("is-loading");
 
-                // odśwież ScrollTrigger po odsłonięciu (u Ciebie pomaga)
+                // odśwież ScrollTrigger po odsłonięciu
                 if (window.ScrollTrigger) {
                     ScrollTrigger.refresh();
                 }
+
+                // Dopiero teraz ładujemy wideo (Safari przestaje "wisieć")
+                lazyLoadVideos();
 
                 setTimeout(() => preloader.remove(), 650);
             }, wait);
@@ -379,20 +499,17 @@ window.addEventListener("load", function () {
         function tick() {
             computeTarget();
 
-            // easing (na fast wejściach szybciej)
-            const ease = hasLoadedOnce ? 0.18 : 0.08;
+            const ease = hasLoadedOnce ? 0.20 : 0.10;
             progress += (target - progress) * ease;
 
-            // clamp
             if (!finished) {
-                progress = Math.min(progress, MAX_BEFORE_LOAD);
+                progress = Math.min(progress, MAX_BEFORE_READY);
             } else {
                 progress = Math.min(progress, 100);
             }
 
             render();
 
-            // warunek zakończenia
             if (finished && progress >= 99.6) {
                 progress = 100;
                 render();
@@ -408,28 +525,44 @@ window.addEventListener("load", function () {
         }
 
         // START
+        render();
         rafId = requestAnimationFrame(tick);
 
-        if (hasLoadedOnce) {
-            // Kolejne wejścia: chowamy szybko (nie czekamy na load)
-            finished = true;
+        async function markReady() {
+            if (finished) return;
 
-            // ale dla porządku ustaw flagę i tak
+            // DOMContentLoaded (bez czekania na video)
+            if (document.readyState === "loading") {
+                await new Promise(resolve => {
+                    document.addEventListener("DOMContentLoaded", resolve, { once: true });
+                });
+            }
+
+            // fonty, ale max FONTS_MAX_WAIT_MS
+            try {
+                if (document.fonts && document.fonts.ready) {
+                    await Promise.race([
+                        document.fonts.ready,
+                        new Promise(resolve => setTimeout(resolve, FONTS_MAX_WAIT_MS))
+                    ]);
+                }
+            } catch (e) {}
+
+            finished = true;
+            sessionStorage.setItem(SESSION_KEY, "1");
+        }
+
+        if (hasLoadedOnce) {
+            finished = true;
             sessionStorage.setItem(SESSION_KEY, "1");
         } else {
-            // Pierwsze wejście: chowamy dopiero po window.load
-            window.addEventListener("load", () => {
-                finished = true;
-                sessionStorage.setItem(SESSION_KEY, "1");
-            });
+            markReady();
 
-            // fail-safe
             setTimeout(() => {
                 finished = true;
                 sessionStorage.setItem(SESSION_KEY, "1");
             }, SLOW_FAILSAFE_MS);
         }
-    
     })();
 
     (function () {
@@ -451,14 +584,10 @@ window.addEventListener("load", function () {
             if (!isInternalUrl(url)) return false;
             if (prefetched.has(url)) return false;
 
-            // nie prefetchuj anchorów i pseudo-linków
             const u = new URL(url, location.href);
             if (u.hash && (u.pathname === location.pathname)) return false;
 
-            // nie prefetchuj plików
             if (/\.(pdf|zip|rar|7z|png|jpg|jpeg|webp|gif|svg|mp4|mp3|woff2?|ttf|otf)$/i.test(u.pathname)) return false;
-
-            // nie prefetchuj wyjść typu mailto/tel
             if (url.startsWith("mailto:") || url.startsWith("tel:")) return false;
 
             return true;
@@ -476,32 +605,21 @@ window.addEventListener("load", function () {
             document.head.appendChild(link);
         }
 
-        // Prefetch po hover/touch (super skuteczne)
         document.querySelectorAll("a[href]").forEach(a => {
-
             const href = a.getAttribute("href");
             if (!href) return;
 
-            // hover
             a.addEventListener("mouseenter", () => prefetchDoc(href), { passive: true });
-
-            // mobile: dotknięcie
             a.addEventListener("touchstart", () => prefetchDoc(href), { passive: true });
-
-            // focus (tabbing)
             a.addEventListener("focus", () => prefetchDoc(href), { passive: true });
-
         });
 
-        // Prefetch "po chwili" najbardziej prawdopodobnych podstron (menu)
         function prefetchTopNavAfterIdle() {
             const navLinks = document.querySelectorAll(".c-nav__link[href]");
             navLinks.forEach(a => prefetchDoc(a.getAttribute("href")));
         }
 
-        // po pełnym załadowaniu + idle (żeby nie psuć TTI)
-        window.addEventListener("load", () => {
-
+        function runAfterIdle() {
             const run = () => prefetchTopNavAfterIdle();
 
             if ("requestIdleCallback" in window) {
@@ -509,68 +627,72 @@ window.addEventListener("load", function () {
             } else {
                 setTimeout(run, 1200);
             }
+        }
 
-        });
-
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", runAfterIdle, { once: true });
+        } else {
+            runAfterIdle();
+        }
     })();
 
 });
 
 (function () {
-  const progressBar = document.querySelector('.c-scroll-progress__bar');
-  if (!progressBar) return;
+    const progressBar = document.querySelector(".c-scroll-progress__bar");
+    if (!progressBar) return;
 
-  let maxScroll = 0;
-  let ticking = false;
+    let maxScroll = 0;
+    let ticking = false;
 
-  function recalcMaxScroll() {
-    // Cała wysokość dokumentu - wysokość okna
-    maxScroll = Math.max(
-      document.documentElement.scrollHeight,
-      document.body.scrollHeight
-    ) - window.innerHeight;
+    function recalcMaxScroll() {
+        // Cała wysokość dokumentu - wysokość okna
+        maxScroll = Math.max(
+            document.documentElement.scrollHeight,
+            document.body.scrollHeight
+        ) - window.innerHeight;
 
-    // Zabezpieczenie dla bardzo krótkich stron
-    if (maxScroll < 1) maxScroll = 1;
-  }
-
-  function updateProgress() {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
-    const progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
-
-    progressBar.style.transform = `scaleX(${progress})`;
-    ticking = false;
-  }
-
-  function requestUpdate() {
-    if (!ticking) {
-      window.requestAnimationFrame(updateProgress);
-      ticking = true;
+        // Zabezpieczenie dla bardzo krótkich stron
+        if (maxScroll < 1) maxScroll = 1;
     }
-  }
 
-  function onResize() {
+    function updateProgress() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+        const progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
+
+        progressBar.style.transform = `scaleX(${progress})`;
+        ticking = false;
+    }
+
+    function requestUpdate() {
+        if (!ticking) {
+            window.requestAnimationFrame(updateProgress);
+            ticking = true;
+        }
+    }
+
+    function onResize() {
+        recalcMaxScroll();
+        requestUpdate();
+    }
+
+    // Init
     recalcMaxScroll();
-    requestUpdate();
-  }
+    updateProgress();
 
-  // Init
-  recalcMaxScroll();
-  updateProgress();
+    // Events
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", onResize);
 
-  // Events
-  window.addEventListener('scroll', requestUpdate, { passive: true });
-  window.addEventListener('resize', onResize);
+    // Dodatkowo po pełnym załadowaniu (obrazy/video mogą zmienić wysokość strony)
+    window.addEventListener("load", onResize);
 
-  // Dodatkowo po pełnym załadowaniu (obrazy/video mogą zmienić wysokość strony)
-  window.addEventListener('load', onResize);
-
-  // Opcjonalnie: jeśli treść dynamicznie się zmienia (np. accordion, lazyload)
-  if ('ResizeObserver' in window) {
-    const ro = new ResizeObserver(() => {
-      recalcMaxScroll();
-      requestUpdate();
-    });
-    ro.observe(document.body);
-  }
+    // Opcjonalnie: jeśli treść dynamicznie się zmienia (np. accordion, lazyload)
+    if ("ResizeObserver" in window) {
+        const ro = new ResizeObserver(() => {
+            recalcMaxScroll();
+            requestUpdate();
+        });
+        ro.observe(document.body);
+    }
 })();
