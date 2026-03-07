@@ -16,8 +16,9 @@
     --color-accent: #e94310;
 
     --fs-400: 1.2rem;
+    --fs-600: 2rem;
     --fs-700: 2.6rem;
-    --fs-900: 3rem;
+    --fs-900: 2.8rem;
 
     --nav-height: 80px;
     --nav-underline-height: 2px;
@@ -233,7 +234,7 @@ body.is-nav-open {
     position: relative;
     font-family: 'Red Hat Display', sans-serif;
     font-optical-sizing: auto;
-    font-size: var(--fs-700);
+    font-size: var(--fs-600);
     font-weight: 600;
     color: var(--color-text-nav);
     text-decoration: none;
@@ -328,14 +329,17 @@ body.is-nav-open {
 }
 
 .c-hero__subtitle {
-    max-width: 30rem;
     margin: 0 auto 1rem;
-    font-size: 1rem;
+    max-width: 30rem;
+    font-size: var(--fs-400);
     font-weight: 500;
-    line-height: 1.4;
-    letter-spacing: 0.03em;
     color: rgba(255, 255, 255, 0.9);
+    line-height: 1.4;
     text-transform: none;
+}
+
+.c-hero__subtitle-break {
+    display: block;
 }
 
 .c-hero__lead {
@@ -713,9 +717,9 @@ html.is-loading body > :not(.c-preloader) {
 
 .c-preloader__percent {
     font-family: 'Red Hat Display', sans-serif;
-    font-size: 2.2rem;
-    line-height: 1;
+    font-size: var(--fs-700);
     color: var(--color-heading);
+    line-height: 1;
 }
 
 .c-preloader__bar {
@@ -736,10 +740,7 @@ html.is-loading body > :not(.c-preloader) {
 }
 
 .c-preloader__text {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.4rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: var(--fs-400);
     color: var(--color-text);
 }
 
@@ -754,7 +755,7 @@ html.is-loading body > :not(.c-preloader) {
     
     :root {
         --fs-700: 2.4rem;
-        --section-space: 8rem;
+        --section-space: 7.6rem;
     }
 
     .c-nav__logo {
@@ -764,6 +765,10 @@ html.is-loading body > :not(.c-preloader) {
     .c-hero__subtitle {
         max-width: 34rem;
         font-size: 1.1rem;
+    }
+    
+    .c-hero__subtitle-break {
+        display: inline;
     }
 
     .c-hero__lead {
@@ -878,12 +883,12 @@ html.is-loading body > :not(.c-preloader) {
     }
 
     .c-nav__overlay {
+        height: auto;
+        width: auto;
         position: absolute;
         top: 50%;
         right: 30px;
         transform: translateY(-50%);
-        width: auto;
-        height: auto;
         flex-direction: row;
         justify-content: flex-end;
         background: transparent;
